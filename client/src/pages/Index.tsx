@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Plus, Receipt, QrCode, Sparkles } from "lucide-react";
+import { Plus, ScanLine, UtensilsCrossed, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import SectionHeader from "@/components/SectionHeader";
 import QuickActionButton from "@/components/QuickActionButton";
@@ -68,8 +68,8 @@ const Index = () => {
         <SectionHeader title="Quick Actions" />
         <div className="grid grid-cols-3 gap-3">
           <QuickActionButton icon={Plus} label="Add Pantry" onClick={() => navigate("/pantry")} />
-          <QuickActionButton icon={Receipt} label="Scan Receipt" onClick={() => navigate("/scan")} />
-          <QuickActionButton icon={QrCode} label="Scan QR" onClick={() => navigate("/scan")} />
+          <QuickActionButton icon={ScanLine} label="Scan" onClick={() => navigate("/scan")} />
+          <QuickActionButton icon={UtensilsCrossed} label="View Meals" onClick={() => navigate("/meals")} />
         </div>
       </motion.div>
 

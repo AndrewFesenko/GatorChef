@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Camera, QrCode, Upload, Receipt } from "lucide-react";
 
 const Scan = () => {
-  const [mode, setMode] = useState<"receipt" | "qr">("receipt");
+  const location = useLocation();
+  const initialMode = (location.state as { mode?: "receipt" | "qr" } | null)?.mode ?? "receipt";
+  const [mode, setMode] = useState<"receipt" | "qr">(initialMode);
 
   return (
     <div className="space-y-6 pt-2">
@@ -12,18 +15,16 @@ const Scan = () => {
       <div className="flex bg-card border border-border rounded-lg p-1">
         <button
           onClick={() => setMode("receipt")}
-          className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-md text-sm font-medium transition-colors ${
-            mode === "receipt" ? "bg-primary text-primary-foreground" : "text-muted-foreground"
-          }`}
+          className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-md text-sm font-medium transition-colors ${mode === "receipt" ? "bg-primary text-primary-foreground" : "text-muted-foreground"
+            }`}
         >
           <Receipt size={14} />
           Receipt
         </button>
         <button
           onClick={() => setMode("qr")}
-          className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-md text-sm font-medium transition-colors ${
-            mode === "qr" ? "bg-primary text-primary-foreground" : "text-muted-foreground"
-          }`}
+          className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-md text-sm font-medium transition-colors ${mode === "qr" ? "bg-primary text-primary-foreground" : "text-muted-foreground"
+            }`}
         >
           <QrCode size={14} />
           QR Code

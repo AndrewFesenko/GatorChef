@@ -1,9 +1,17 @@
-// recipe detail page — currently only rice & beans has full content, others show a "coming soon" state
-// all the data lives in src/data/recipes.ts so adding a new recipe is just filling that in
+// single detail page for both GatorChef recipes (from data/recipes.ts) and user-created meals (passed via location.state)
 
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft, Clock, Users, ChefHat, Lightbulb } from "lucide-react";
 import { recipes } from "@/data/recipes";
+
+interface UserMeal {
+    id: string;
+    title: string;
+    desc: string;
+    time: string;
+    difficulty: "Easy" | "Medium" | "Hard";
+    ingredients: string[];
+}
 
 const difficultyColor: Record<string, string> = {
     Easy: "text-primary bg-primary/10",
@@ -14,11 +22,13 @@ const difficultyColor: Record<string, string> = {
 const RecipeDetail = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const location = useLocation();
 
-    const recipe = recipes.find((r) => r.id === id);
+    const gcRecipe = recipes.find((r) => r.id === id);
+    const userMeal = (location.state as { meal?: UserMeal } | null)?.meal;
 
-    // recipe id doesn't exist in the data file
-    if (!recipe) {
+    // ── Not found ──────────────────────────────────────────────
+    if (!gcRecipe && !userMeal) {
         return (
             <div className="pt-2 space-y-4">
                 <button
@@ -35,7 +45,71 @@ const RecipeDetail = () => {
         );
     }
 
-    // recipe exists but we haven't filled in the steps yet
+    // ── User-created meal ──────────────────────────────────────
+    if (userMeal) {
+        return (
+            <div className="space-y-5 pt-2 pb-4">
+                <button
+                    onClick={() => navigate("/meals")}
+                    className="flex items-center gap-2 text-sm text-muted-foreground tap-highlight-none"
+                >
+                    <ArrowLeft size={16} />
+                    Back to meals
+                </button>
+
+                <div className="rounded-xl bg-card border border-border overflow-hidden">
+                    <div className="w-full h-44 bg-secondary flex items-center justify-center">
+                        <span className="text-5xl">🍽️</span>
+                    </div>
+                    <div className="p-4 space-y-3">
+                        <div className="flex items-start justify-between gap-3">
+                            <div className="flex-1">
+                                <h1 className="text-lg font-bold text-foreground">{userMeal.title}</h1>
+                                <p className="text-sm text-muted-foreground mt-0.5">{userMeal.desc}</p>
+                            </div>
+                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium flex-shrink-0 ${difficultyColor[userMeal.difficulty]}`}>
+                                {userMeal.difficulty}
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            {userMeal.time && userMeal.time !== "—" && (
+                                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                                    <Clock size={13} />
+                                    {userMeal.time}
+                                </div>
+                            )}
+                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                                <ChefHat size={13} />
+                                My Meal
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 className="text-sm font-semibold text-foreground mb-3">Ingredients</h2>
+                    <div className="rounded-xl bg-card border border-border divide-y divide-border">
+                        {userMeal.ingredients.map((ing, i) => (
+                            <div key={i} className="flex items-center px-4 py-3">
+                                <span className="text-sm text-foreground">{ing}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="rounded-xl bg-card border border-border p-8 text-center space-y-2">
+                    <p className="text-2xl">🧑‍🍳</p>
+                    <p className="text-sm font-medium text-foreground">Steps coming soon</p>
+                    <p className="text-xs text-muted-foreground">
+                        You'll be able to add step-by-step instructions here.
+                    </p>
+                </div>
+            </div>
+        );
+    }
+
+    // ── GatorChef recipe ───────────────────────────────────────
+    const recipe = gcRecipe!;
     const isComingSoon = recipe.steps.length === 0;
 
     return (

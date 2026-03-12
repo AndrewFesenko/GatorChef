@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Plus, Search, X } from "lucide-react";
+import { Plus, Search, X, ScanLine } from "lucide-react";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 import BottomSheet from "@/components/BottomSheet";
 
 const mockIngredients = [
@@ -19,6 +20,7 @@ const mockIngredients = [
 const categories = ["All", "Protein", "Produce", "Grain", "Sauce", "Dairy", "Oil"];
 
 const Pantry = () => {
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const [showAdd, setShowAdd] = useState(false);
@@ -54,12 +56,22 @@ const Pantry = () => {
     <div className="space-y-5 pt-2">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold text-foreground">Pantry</h1>
-        <button
-          onClick={() => setShowAdd(!showAdd)}
-          className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center tap-highlight-none"
-        >
-          <Plus size={16} className="text-primary-foreground" />
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate("/scan")}
+            className="w-9 h-9 rounded-lg bg-secondary border border-border flex items-center justify-center tap-highlight-none"
+            title="Scan to add"
+          >
+            <ScanLine size={16} className="text-muted-foreground" />
+          </button>
+          <button
+            onClick={() => setShowAdd(!showAdd)}
+            className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center tap-highlight-none"
+            title="Add manually"
+          >
+            <Plus size={16} className="text-primary-foreground" />
+          </button>
+        </div>
       </div>
 
       {/* search bar, clears with the x button */}
@@ -140,8 +152,8 @@ const Pantry = () => {
                   key={cat}
                   onClick={() => setNewCategory(cat)}
                   className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors tap-highlight-none ${newCategory === cat
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-secondary border border-border text-muted-foreground"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary border border-border text-muted-foreground"
                     }`}
                 >
                   {cat}
