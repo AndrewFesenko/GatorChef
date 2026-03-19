@@ -1,21 +1,16 @@
-import { useState } from "react";
-import { Plus, Search, X, ScanLine } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Plus, ScanLine, Search, X } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import BottomSheet from "@/components/BottomSheet";
+import { apiRequest } from "@/lib/api";
 
-const mockIngredients = [
-  { name: "Chicken breast", category: "Protein", expiry: "3 days" },
-  { name: "Rice", category: "Grain", expiry: "6 months" },
-  { name: "Garlic", category: "Produce", expiry: "2 weeks" },
-  { name: "Soy sauce", category: "Sauce", expiry: "1 year" },
-  { name: "Broccoli", category: "Produce", expiry: "5 days" },
-  { name: "Eggs", category: "Protein", expiry: "2 weeks" },
-  { name: "Butter", category: "Dairy", expiry: "1 month" },
-  { name: "Onion", category: "Produce", expiry: "3 weeks" },
-  { name: "Pasta", category: "Grain", expiry: "8 months" },
-  { name: "Olive oil", category: "Oil", expiry: "6 months" },
-];
+interface PantryItem {
+  id: string;
+  name: string;
+  category: string;
+  expiry: string;
+}
 
 const categories = ["All", "Protein", "Produce", "Grain", "Sauce", "Dairy", "Oil"];
 
@@ -24,28 +19,54 @@ const Pantry = () => {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const [showAdd, setShowAdd] = useState(false);
-  const [ingredients, setIngredients] = useState(mockIngredients);
+  const [ingredients, setIngredients] = useState<PantryItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // form state for the add modal
   const [newName, setNewName] = useState("");
   const [newCategory, setNewCategory] = useState("Produce");
   const [newExpiry, setNewExpiry] = useState("");
 
-  const handleAdd = () => {
+  useEffect(() => {
+    const loadPantry = async () => {
+      try {
+        const pantryItems = await apiRequest<PantryItem[]>("/pantry");
+        setIngredients(pantryItems);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Failed to load pantry";
+        toast.error(message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    void loadPantry();
+  }, []);
+
+  const handleAdd = async () => {
     if (!newName.trim()) return;
-    // adds to local state — will hook into backend later
-    setIngredients((prev) => [
-      { name: newName.trim(), category: newCategory, expiry: newExpiry.trim() || "unknown" },
-      ...prev,
-    ]);
-    toast.success(`${newName.trim()} added to your pantry!`);
-    setNewName("");
-    setNewCategory("Produce");
-    setNewExpiry("");
-    setShowAdd(false);
+
+    try {
+      const createdItem = await apiRequest<PantryItem>("/pantry", {
+        method: "POST",
+        bodyJson: {
+          name: newName.trim(),
+          category: newCategory,
+          expiry: newExpiry.trim() || "unknown",
+        },
+      });
+
+      setIngredients((prev) => [createdItem, ...prev]);
+      toast.success(`${createdItem.name} added to your pantry!`);
+      setNewName("");
+      setNewCategory("Produce");
+      setNewExpiry("");
+      setShowAdd(false);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to add pantry item";
+      toast.error(message);
+    }
   };
 
-  // filters the list live based on whatever the user typed and which category pill is active
   const filtered = ingredients.filter((ing) => {
     const matchSearch = ing.name.toLowerCase().includes(search.toLowerCase());
     const matchCategory = activeCategory === "All" || ing.category === activeCategory;
@@ -74,12 +95,11 @@ const Pantry = () => {
         </div>
       </div>
 
-      {/* search bar, clears with the x button */}
       <div className="relative">
         <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
         <input
           type="text"
-          placeholder="Search ingredients…"
+          placeholder="Search ingredients..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full bg-card border border-border rounded-lg pl-9 pr-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
@@ -91,46 +111,51 @@ const Pantry = () => {
         )}
       </div>
 
-      {/* horizontal scrolling category pills so we don't need a dropdown */}
       <div className="flex gap-2 overflow-x-auto hide-scrollbar -mx-4 px-4">
         {categories.map((cat) => (
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors tap-highlight-none ${activeCategory === cat
-              ? "bg-primary text-primary-foreground"
-              : "bg-card border border-border text-muted-foreground"
-              }`}
+            className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors tap-highlight-none ${
+              activeCategory === cat
+                ? "bg-primary text-primary-foreground"
+                : "bg-card border border-border text-muted-foreground"
+            }`}
           >
             {cat}
           </button>
         ))}
       </div>
 
-      {/* the actual ingredient list, each row shows name, expiry, and category badge */}
       <div className="rounded-xl bg-card border border-border divide-y divide-border">
-        {filtered.map((ing) => (
-          <div key={ing.name} className="flex items-center justify-between px-4 py-3">
-            <div>
-              <p className="text-sm font-medium text-foreground">{ing.name}</p>
-              <p className="text-xs text-muted-foreground">Expires in {ing.expiry}</p>
-            </div>
-            <span className="text-[10px] font-medium text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">
-              {ing.category}
-            </span>
+        {isLoading && (
+          <div className="px-4 py-10 text-center">
+            <p className="text-sm text-muted-foreground">Loading pantry...</p>
           </div>
-        ))}
-        {filtered.length === 0 && (
+        )}
+
+        {!isLoading &&
+          filtered.map((ing) => (
+            <div key={ing.id} className="flex items-center justify-between px-4 py-3">
+              <div>
+                <p className="text-sm font-medium text-foreground">{ing.name}</p>
+                <p className="text-xs text-muted-foreground">Expires in {ing.expiry}</p>
+              </div>
+              <span className="text-[10px] font-medium text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">
+                {ing.category}
+              </span>
+            </div>
+          ))}
+
+        {!isLoading && filtered.length === 0 && (
           <div className="px-4 py-10 text-center">
             <p className="text-sm text-muted-foreground">No ingredients found</p>
           </div>
         )}
       </div>
 
-      {/* add ingredient bottom sheet */}
       <BottomSheet isOpen={showAdd} onClose={() => setShowAdd(false)} title="Add Ingredient">
         <div className="space-y-4">
-          {/* item name */}
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-muted-foreground">Item name *</label>
             <input
@@ -138,35 +163,39 @@ const Pantry = () => {
               placeholder="e.g. Chicken breast"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleAdd()}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  void handleAdd();
+                }
+              }}
               className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>
 
-          {/* category picker */}
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-muted-foreground">Category *</label>
             <div className="flex flex-wrap gap-2">
-              {categories.filter((c) => c !== "All").map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setNewCategory(cat)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors tap-highlight-none ${newCategory === cat
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-secondary border border-border text-muted-foreground"
+              {categories
+                .filter((c) => c !== "All")
+                .map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setNewCategory(cat)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors tap-highlight-none ${
+                      newCategory === cat
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-secondary border border-border text-muted-foreground"
                     }`}
-                >
-                  {cat}
-                </button>
-              ))}
+                  >
+                    {cat}
+                  </button>
+                ))}
             </div>
           </div>
 
-          {/* expiry is optional, just free text for now */}
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-muted-foreground">
-              Expires in{" "}
-              <span className="text-muted-foreground/60">(optional)</span>
+              Expires in <span className="text-muted-foreground/60">(optional)</span>
             </label>
             <input
               type="text"
@@ -178,7 +207,7 @@ const Pantry = () => {
           </div>
 
           <button
-            onClick={handleAdd}
+            onClick={() => void handleAdd()}
             disabled={!newName.trim()}
             className="w-full bg-primary text-primary-foreground py-3 rounded-xl text-sm font-semibold disabled:opacity-40 transition-opacity"
           >
