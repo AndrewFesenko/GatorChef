@@ -1,6 +1,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, User, Moon, LogIn, LogOut, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { useAuth } from "@/lib/auth";
 
 interface SettingsDrawerProps {
   isOpen: boolean;
@@ -11,10 +13,23 @@ interface SettingsDrawerProps {
 
 const SettingsDrawer = ({ isOpen, onClose, isDark, onToggleTheme }: SettingsDrawerProps) => {
   const navigate = useNavigate();
+  const { logout, user } = useAuth();
 
   const handleNav = (path: string) => {
     onClose();
     navigate(path);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Signed out");
+      onClose();
+      navigate("/login");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to sign out";
+      toast.error(message);
+    }
   };
 
   return (
@@ -66,20 +81,21 @@ const SettingsDrawer = ({ isOpen, onClose, isDark, onToggleTheme }: SettingsDraw
                 <ChevronRight size={14} className="text-muted-foreground" />
               </button>
 
-              {/* Log In */}
-              <button
-                onClick={() => handleNav("/login")}
-                className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-surface-hover transition-colors tap-highlight-none"
-              >
-                <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center">
-                  <LogIn size={15} className="text-muted-foreground" />
-                </div>
-                <div className="flex-1 text-left">
-                  <p className="text-sm font-medium text-foreground">Log In</p>
-                  <p className="text-xs text-muted-foreground">Sign in to sync data</p>
-                </div>
-                <ChevronRight size={14} className="text-muted-foreground" />
-              </button>
+              {!user && (
+                <button
+                  onClick={() => handleNav("/login")}
+                  className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-surface-hover transition-colors tap-highlight-none"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center">
+                    <LogIn size={15} className="text-muted-foreground" />
+                  </div>
+                  <div className="flex-1 text-left">
+                    <p className="text-sm font-medium text-foreground">Log In</p>
+                    <p className="text-xs text-muted-foreground">Sign in to sync data</p>
+                  </div>
+                  <ChevronRight size={14} className="text-muted-foreground" />
+                </button>
+              )}
 
               {/* Dark Mode toggle */}
               <button
@@ -106,7 +122,7 @@ const SettingsDrawer = ({ isOpen, onClose, isDark, onToggleTheme }: SettingsDraw
 
               {/* Log Out */}
               <button
-                onClick={onClose}
+                onClick={() => void handleLogout()}
                 className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-surface-hover transition-colors tap-highlight-none"
               >
                 <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center">

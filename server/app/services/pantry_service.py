@@ -7,22 +7,19 @@ from app.schemas.pantry import PantryItemCreate, PantryItemResponse, PantryItemU
 
 
 class PantryService:
-    def __init__(self, user_id: str = "demo-user") -> None:
-        self._user_id = user_id
-
-    def _collection(self):
+    def _collection(self, user_id: str):
         try:
             db = get_firestore_client()
-            return db.collection("users").document(self._user_id).collection("pantry")
+            return db.collection("users").document(user_id).collection("pantry")
         except Exception as exc:
             raise HTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail=f"Firestore connection failed: {exc}",
             ) from exc
 
-    def list_items(self) -> list[PantryItemResponse]:
+    def list_items(self, user_id: str) -> list[PantryItemResponse]:
         try:
-            documents = self._collection().stream()
+            documents = self._collection(user_id).stream()
             items = [PantryItemResponse(id=document.id, **document.to_dict()) for document in documents]
             return sorted(items, key=lambda item: item.name.lower())
         except HTTPException:
@@ -33,10 +30,10 @@ class PantryService:
                 detail=f"Firestore read failed: {exc}",
             ) from exc
 
-    def create_item(self, payload: PantryItemCreate) -> PantryItemResponse:
+    def create_item(self, user_id: str, payload: PantryItemCreate) -> PantryItemResponse:
         try:
             item = PantryItemResponse(id=f"pantry_{uuid4().hex[:8]}", **payload.model_dump())
-            self._collection().document(item.id).set(payload.model_dump())
+            self._collection(user_id).document(item.id).set(payload.model_dump())
             return item
         except HTTPException:
             raise
@@ -46,9 +43,9 @@ class PantryService:
                 detail=f"Firestore write failed: {exc}",
             ) from exc
 
-    def update_item(self, item_id: str, payload: PantryItemUpdate) -> PantryItemResponse:
+    def update_item(self, user_id: str, item_id: str, payload: PantryItemUpdate) -> PantryItemResponse:
         try:
-            document = self._collection().document(item_id)
+            document = self._collection(user_id).document(item_id)
             if not document.get().exists:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
@@ -65,9 +62,9 @@ class PantryService:
                 detail=f"Firestore update failed: {exc}",
             ) from exc
 
-    def delete_item(self, item_id: str) -> None:
+    def delete_item(self, user_id: str, item_id: str) -> None:
         try:
-            document = self._collection().document(item_id)
+            document = self._collection(user_id).document(item_id)
             if not document.get().exists:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,

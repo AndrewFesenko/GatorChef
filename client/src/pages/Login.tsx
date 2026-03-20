@@ -1,16 +1,35 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { toast } from "sonner";
+import { useAuth } from "@/lib/auth";
 
 const Login = () => {
     const navigate = useNavigate();
+    const { login } = useAuth();
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [form, setForm] = useState({ email: "", password: "" });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // TODO: wire up real auth
-        navigate("/");
+
+        if (!form.email.trim() || !form.password) {
+            toast.error("Email and password are required");
+            return;
+        }
+
+        setIsSubmitting(true);
+        try {
+            await login(form.email.trim(), form.password);
+            toast.success("Signed in successfully");
+            navigate("/");
+        } catch (error) {
+            const message = error instanceof Error ? error.message : "Sign in failed";
+            toast.error(message);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -72,9 +91,10 @@ const Login = () => {
 
                     <button
                         type="submit"
+                        disabled={isSubmitting}
                         className="w-full h-12 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity tap-highlight-none"
                     >
-                        Sign In
+                        {isSubmitting ? "Signing In..." : "Sign In"}
                     </button>
                 </form>
 
@@ -86,7 +106,7 @@ const Login = () => {
                 </div>
 
                 {/* Social placeholder */}
-                <button className="w-full h-12 rounded-xl border border-border bg-card text-sm font-medium text-foreground flex items-center justify-center gap-2 hover:bg-surface-hover transition-colors tap-highlight-none">
+                <button type="button" className="w-full h-12 rounded-xl border border-border bg-card text-sm font-medium text-foreground flex items-center justify-center gap-2 hover:bg-surface-hover transition-colors tap-highlight-none">
                     <span>G</span>
                     <span>Continue with Google</span>
                 </button>

@@ -6,11 +6,13 @@ type RequestOptions = RequestInit & {
 
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { bodyJson, headers, ...rest } = options;
+  const token = localStorage.getItem("gatorchef_id_token");
 
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...rest,
     headers: {
       "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...headers,
     },
     body: bodyJson ? JSON.stringify(bodyJson) : rest.body,
