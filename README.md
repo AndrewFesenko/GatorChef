@@ -241,7 +241,35 @@ npm run dev
 
 `python run.py` is a simple wrapper around uvicorn with reload enabled.
 
-### 5. Quick checks
+### 5. Run the frontend in Docker
+
+This repo now includes an initial containerization scaffold for the frontend.
+
+Start the Vite dev server in Docker:
+
+```bash
+docker compose up --build
+```
+
+That currently runs the `client` service only and publishes the app on `http://localhost:8080`.
+
+Notes:
+
+- the compose setup is dev-focused for now
+- source code is bind-mounted into the container for live editing
+- `client/.env.local` is still the right place for local frontend secrets and Firebase config
+- the backend is not containerized yet, but `docker-compose.yml` is ready to grow into a multi-service setup
+
+### 6. Build a production frontend image
+
+The client Dockerfile also has a production target that serves the built app with nginx:
+
+```bash
+docker build -t gatorchef-client --target prod ./client
+docker run --rm -p 8080:80 gatorchef-client
+```
+
+### 7. Quick checks
 
 - backend health: `http://127.0.0.1:8000/health`
 - frontend dev server: URL printed by Vite
