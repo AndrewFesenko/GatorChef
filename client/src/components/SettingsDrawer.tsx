@@ -1,8 +1,9 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { X, User, Moon, LogIn, LogOut, ChevronRight } from "lucide-react";
+import { X, Moon, LogIn, LogOut, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
+import UserAvatar from "@/components/UserAvatar";
 
 interface SettingsDrawerProps {
   isOpen: boolean;
@@ -13,7 +14,7 @@ interface SettingsDrawerProps {
 
 const SettingsDrawer = ({ isOpen, onClose, isDark, onToggleTheme }: SettingsDrawerProps) => {
   const navigate = useNavigate();
-  const { logout, user } = useAuth();
+  const { logout, user, profile } = useAuth();
 
   const handleNav = (path: string) => {
     onClose();
@@ -71,12 +72,18 @@ const SettingsDrawer = ({ isOpen, onClose, isDark, onToggleTheme }: SettingsDraw
                 onClick={() => handleNav("/profile")}
                 className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-surface-hover transition-colors tap-highlight-none"
               >
-                <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center">
-                  <User size={15} className="text-muted-foreground" />
-                </div>
+                <UserAvatar
+                  photoUrl={profile?.photo_url ?? user?.photoURL}
+                  name={profile?.display_name ?? user?.displayName}
+                  email={profile?.email ?? user?.email}
+                  sizeClassName="w-8 h-8"
+                  textClassName="text-xs"
+                />
                 <div className="flex-1 text-left">
                   <p className="text-sm font-medium text-foreground">Profile</p>
-                  <p className="text-xs text-muted-foreground">Manage your account</p>
+                  <p className="text-xs text-muted-foreground">
+                    {profile?.email ?? user?.email ?? "Manage your account"}
+                  </p>
                 </div>
                 <ChevronRight size={14} className="text-muted-foreground" />
               </button>

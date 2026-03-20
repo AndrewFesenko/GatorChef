@@ -33,6 +33,7 @@ def get_my_profile(current_user: AuthenticatedUser = Depends(get_current_user)) 
         uid=current_user.uid,
         email=payload.get("email", current_user.email or ""),
         display_name=payload.get("display_name", ""),
+        photo_url=payload.get("photo_url"),
     )
 
 
@@ -49,9 +50,15 @@ def upsert_my_profile(
         {
             "email": profile.email,
             "display_name": profile.display_name,
+            "photo_url": profile.photo_url,
             "updated_at": now,
         },
         merge=True,
     )
 
-    return UserProfileResponse(uid=current_user.uid, email=profile.email, display_name=profile.display_name)
+    return UserProfileResponse(
+        uid=current_user.uid,
+        email=profile.email,
+        display_name=profile.display_name,
+        photo_url=profile.photo_url,
+    )

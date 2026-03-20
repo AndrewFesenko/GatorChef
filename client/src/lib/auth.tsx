@@ -1,21 +1,34 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import {
+  EmailAuthProvider,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  reauthenticateWithCredential,
   signInWithEmailAndPassword,
   signOut,
+  updatePassword,
   updateProfile,
   type User,
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { apiRequest } from "@/lib/api";
 
+export type UserProfile = {
+  uid: string;
+  email: string;
+  display_name: string;
+  photo_url?: string | null;
+};
+
 type AuthContextValue = {
   user: User | null;
+  profile: UserProfile | null;
   isAuthReady: boolean;
   signup: (name: string, email: string, password: string) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  updateUserProfile: (payload: { displayName: string; photoUrl?: string | null }) => Promise<void>;
+  changePassword: (currentPassword: string, nextPassword: string) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -23,7 +36,20 @@ const TOKEN_STORAGE_KEY = "gatorchef_id_token";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isAuthReady, setIsAuthReady] = useState(false);
+
+  const fetchProfile = async (idToken: string): Promise<UserProfile | null> => {
+    try {
+      return await apiRequest<UserProfile>("/users/me", {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      });
+    } catch {
+      return null;
+    }
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (nextUser) => {
@@ -33,8 +59,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         // keep a fresh id token for backend requests
         const token = await nextUser.getIdToken();
         localStorage.setItem(TOKEN_STORAGE_KEY, token);
+        const nextProfile = await fetchProfile(token);
+        setProfile(nextProfile);
       } else {
         localStorage.removeItem(TOKEN_STORAGE_KEY);
+        setProfile(null);
       }
 
       setIsAuthReady(true);
@@ -43,23 +72,37 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return unsubscribe;
   }, []);
 
-  const upsertProfile = async (idToken: string, email: string, displayName: string) => {
+  const upsertProfile = async (idToken: string, email: string, displayName: string, photoUrl?: string | null) => {
+    const bodyJson: {
+      email: string;
+      display_name: string;
+      photo_url?: string | null;
+    } = {
+      email,
+      display_name: displayName,
+    };
+
+    // Only send photo when explicitly provided so we do not accidentally wipe it.
+    if (photoUrl !== undefined) {
+      bodyJson.photo_url = photoUrl;
+    }
+
     // make sure a firestore profile exists for this auth user
-    await apiRequest("/users/me", {
+    const updated = await apiRequest<UserProfile>("/users/me", {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
-      bodyJson: {
-        email,
-        display_name: displayName,
-      },
+      bodyJson,
     });
+
+    setProfile(updated);
   };
 
   const value = useMemo<AuthContextValue>(
     () => ({
       user,
+      profile,
       isAuthReady,
       signup: async (name: string, email: string, password: string) => {
         const credential = await createUserWithEmailAndPassword(auth, email, password);
@@ -68,7 +111,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           await updateProfile(credential.user, { displayName: name });
           const idToken = await credential.user.getIdToken();
           localStorage.setItem(TOKEN_STORAGE_KEY, idToken);
-          await upsertProfile(idToken, email, name);
+          await upsertProfile(idToken, email, name, credential.user.photoURL ?? undefined);
         }
       },
       login: async (email: string, password: string) => {
@@ -76,15 +119,67 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const idToken = await credential.user.getIdToken();
         localStorage.setItem(TOKEN_STORAGE_KEY, idToken);
 
+        const existingProfile = await fetchProfile(idToken);
+        // Prefer backend profile fields so a relogin does not clobber user customizations.
+        const profileDisplayName =
+          existingProfile?.display_name ?? credential.user.displayName ?? "GatorChef User";
+        const profilePhotoUrl =
+          existingProfile?.photo_url ?? credential.user.photoURL ?? undefined;
+
         // Ensure a profile exists even for users created outside this client.
-        await upsertProfile(idToken, credential.user.email ?? email, credential.user.displayName ?? "GatorChef User");
+        await upsertProfile(
+          idToken,
+          existingProfile?.email ?? credential.user.email ?? email,
+          profileDisplayName,
+          profilePhotoUrl,
+        );
       },
       logout: async () => {
         await signOut(auth);
         localStorage.removeItem(TOKEN_STORAGE_KEY);
+        setProfile(null);
+      },
+      updateUserProfile: async ({ displayName, photoUrl }) => {
+        const authUser = auth.currentUser;
+        if (!authUser) {
+          throw new Error("You must be signed in to update your profile.");
+        }
+
+        const email = authUser.email ?? profile?.email;
+        if (!email) {
+          throw new Error("Unable to update profile because no email is available.");
+        }
+
+        // Firebase Auth rejects long data URLs for photoURL, so keep large
+        // avatar images in our backend profile and only push normal URLs to Auth.
+        const isDataUrlPhoto = typeof photoUrl === "string" && photoUrl.startsWith("data:");
+        await updateProfile(authUser, {
+          displayName,
+          photoURL: isDataUrlPhoto ? authUser.photoURL : (photoUrl ?? null),
+        });
+
+        const idToken = await authUser.getIdToken(true);
+        localStorage.setItem(TOKEN_STORAGE_KEY, idToken);
+
+        await upsertProfile(
+          idToken,
+          email,
+          displayName,
+          photoUrl,
+        );
+      },
+      changePassword: async (currentPassword: string, nextPassword: string) => {
+        const authUser = auth.currentUser;
+        if (!authUser || !authUser.email) {
+          throw new Error("You must be signed in with an email account to change password.");
+        }
+
+        const credential = EmailAuthProvider.credential(authUser.email, currentPassword);
+        await reauthenticateWithCredential(authUser, credential);
+        await updatePassword(authUser, nextPassword);
       },
     }),
-    [isAuthReady, user],
+    [isAuthReady, profile, user],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
