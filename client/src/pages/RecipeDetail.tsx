@@ -1,4 +1,4 @@
-// single detail page for both GatorChef recipes (from data/recipes.ts) and user-created meals (passed via location.state)
+// this page supports both built-in recipes and user-created meals
 
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft, Clock, Users, ChefHat, Lightbulb } from "lucide-react";
@@ -27,7 +27,7 @@ const RecipeDetail = () => {
     const gcRecipe = recipes.find((r) => r.id === id);
     const userMeal = (location.state as { meal?: UserMeal } | null)?.meal;
 
-    // ── Not found ──────────────────────────────────────────────
+    // fallback when neither source has a matching recipe
     if (!gcRecipe && !userMeal) {
         return (
             <div className="pt-2 space-y-4">
@@ -45,7 +45,7 @@ const RecipeDetail = () => {
         );
     }
 
-    // ── User-created meal ──────────────────────────────────────
+    // user-created meal view
     if (userMeal) {
         return (
             <div className="space-y-5 pt-2 pb-4">
@@ -108,7 +108,7 @@ const RecipeDetail = () => {
         );
     }
 
-    // ── GatorChef recipe ───────────────────────────────────────
+    // built-in gatorchef recipe view
     const recipe = gcRecipe!;
     const isComingSoon = recipe.steps.length === 0;
 
@@ -123,9 +123,9 @@ const RecipeDetail = () => {
                 Back to meals
             </button>
 
-            {/* hero area */}
+            {/* top card */}
             <div className="rounded-xl bg-card border border-border overflow-hidden">
-                {/* placeholder image, swap this when you have real meal photos */}
+                {/* placeholder image until real photos are added */}
                 <div className="w-full h-44 bg-secondary flex items-center justify-center">
                     <span className="text-5xl">🍚</span>
                 </div>
@@ -139,7 +139,7 @@ const RecipeDetail = () => {
                         <span className="text-sm font-bold text-primary ml-3">{recipe.match}%</span>
                     </div>
 
-                    {/* quick stats row */}
+                    {/* quick stats */}
                     <div className="flex items-center gap-4">
                         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                             <Clock size={13} />
@@ -159,7 +159,7 @@ const RecipeDetail = () => {
                 </div>
             </div>
 
-            {/* coming soon state for recipes without content yet */}
+            {/* shown when steps are not filled in yet */}
             {isComingSoon ? (
                 <div className="rounded-xl bg-card border border-border p-8 text-center space-y-2">
                     <p className="text-2xl">🧑‍🍳</p>
@@ -170,7 +170,7 @@ const RecipeDetail = () => {
                 </div>
             ) : (
                 <>
-                    {/* ingredients list */}
+                    {/* ingredients */}
                     <div>
                         <h2 className="text-sm font-semibold text-foreground mb-3">Ingredients</h2>
                         <div className="rounded-xl bg-card border border-border divide-y divide-border">
@@ -183,13 +183,13 @@ const RecipeDetail = () => {
                         </div>
                     </div>
 
-                    {/* step by step instructions */}
+                    {/* instructions */}
                     <div>
                         <h2 className="text-sm font-semibold text-foreground mb-3">Instructions</h2>
                         <div className="space-y-3">
                             {recipe.steps.map((s) => (
                                 <div key={s.step} className="flex gap-3">
-                                    {/* step number bubble */}
+                                    {/* step number */}
                                     <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-0.5">
                                         <span className="text-[10px] font-bold text-primary-foreground">{s.step}</span>
                                     </div>
@@ -199,7 +199,7 @@ const RecipeDetail = () => {
                         </div>
                     </div>
 
-                    {/* tips section, only shows if there are any */}
+                    {/* tips if provided */}
                     {recipe.tips && recipe.tips.length > 0 && (
                         <div>
                             <h2 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">

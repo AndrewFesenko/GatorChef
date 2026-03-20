@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(nextUser);
 
       if (nextUser) {
+        // keep a fresh id token for backend requests
         const token = await nextUser.getIdToken();
         localStorage.setItem(TOKEN_STORAGE_KEY, token);
       } else {
@@ -43,6 +44,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const upsertProfile = async (idToken: string, email: string, displayName: string) => {
+    // make sure a firestore profile exists for this auth user
     await apiRequest("/users/me", {
       method: "PUT",
       headers: {
@@ -62,6 +64,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       signup: async (name: string, email: string, password: string) => {
         const credential = await createUserWithEmailAndPassword(auth, email, password);
         if (credential.user) {
+          // keep firebase auth display name and firestore profile in sync
           await updateProfile(credential.user, { displayName: name });
           const idToken = await credential.user.getIdToken();
           localStorage.setItem(TOKEN_STORAGE_KEY, idToken);

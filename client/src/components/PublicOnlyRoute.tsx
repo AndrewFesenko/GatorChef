@@ -4,6 +4,7 @@ import { useAuth } from "@/lib/auth";
 const PublicOnlyRoute = ({ children }: { children: JSX.Element }) => {
   const { user, isAuthReady } = useAuth();
 
+  // wait for session check before deciding where to route
   if (!isAuthReady) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -13,6 +14,7 @@ const PublicOnlyRoute = ({ children }: { children: JSX.Element }) => {
   }
 
   if (user) {
+    // keep signed-in users out of login/signup pages
     return <Navigate to="/" replace />;
   }
 

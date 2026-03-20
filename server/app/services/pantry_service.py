@@ -10,6 +10,7 @@ class PantryService:
     def _collection(self, user_id: str):
         try:
             db = get_firestore_client()
+            # keep pantry items scoped under each authenticated user document
             return db.collection("users").document(user_id).collection("pantry")
         except Exception as exc:
             raise HTTPException(
@@ -21,6 +22,7 @@ class PantryService:
         try:
             documents = self._collection(user_id).stream()
             items = [PantryItemResponse(id=document.id, **document.to_dict()) for document in documents]
+            # stable sorting keeps the list predictable for users
             return sorted(items, key=lambda item: item.name.lower())
         except HTTPException:
             raise

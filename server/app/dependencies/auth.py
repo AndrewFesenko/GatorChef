@@ -23,6 +23,7 @@ def get_current_user(
     if credentials is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing bearer token")
 
+    # token from Authorization: Bearer <token>
     token = credentials.credentials
 
     try:
@@ -46,4 +47,5 @@ def get_current_user(
     if not uid:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token missing uid claim")
 
+    # we only pass fields currently needed by routes/services
     return AuthenticatedUser(uid=uid, email=decoded.get("email"))

@@ -156,7 +156,7 @@ const Meals = () => {
         </div>
       )}
 
-      {/* ── GatorChef Meals ── */}
+      {/* built-in gatorchef meals */}
       {tab === "gatorchef" && (
         <div className="space-y-3">
           {filteredGC.map((meal) => (
@@ -218,7 +218,7 @@ const Meals = () => {
         </div>
       )}
 
-      {/* ── My Meals ── */}
+      {/* user-created meals */}
       {tab === "mine" && (
         <div className="space-y-3">
           {filteredMine.map((meal) => (

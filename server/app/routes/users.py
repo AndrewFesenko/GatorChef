@@ -13,6 +13,7 @@ router = APIRouter(prefix="/users", tags=["users"])
 def _user_doc(uid: str):
     try:
         db = get_firestore_client()
+        # user profile root document; pantry stays in a subcollection under this
         return db.collection("users").document(uid)
     except Exception as exc:
         raise HTTPException(

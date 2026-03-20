@@ -4,6 +4,7 @@ import { useAuth } from "@/lib/auth";
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { user, isAuthReady } = useAuth();
 
+  // avoid redirect flicker until firebase resolves the current session
   if (!isAuthReady) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -13,6 +14,7 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   }
 
   if (!user) {
+    // block private routes when not logged in
     return <Navigate to="/login" replace />;
   }
 

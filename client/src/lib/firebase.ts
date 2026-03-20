@@ -10,6 +10,7 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
+// these are the minimum fields needed for auth to initialize correctly
 const requiredKeys: Array<keyof typeof firebaseConfig> = [
   "apiKey",
   "authDomain",
