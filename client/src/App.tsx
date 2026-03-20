@@ -13,31 +13,56 @@ import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
+import ProtectedRoute from "./components/ProtectedRoute";
+import PublicOnlyRoute from "./components/PublicOnlyRoute";
+import { AuthProvider } from "./lib/auth";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Sonner />
-      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <Routes>
-          {/* Auth pages are outside AppLayout so they have no nav bars */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route element={<AppLayout />}>
-            <Route path="/" element={<Index />} />
-            <Route path="/pantry" element={<Pantry />} />
-            <Route path="/scan" element={<Scan />} />
-            <Route path="/meals" element={<Meals />} />
-            <Route path="/meals/:id" element={<RecipeDetail />} />
-            <Route path="/list" element={<ShoppingList />} />
-            <Route path="/profile" element={<Profile />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <Sonner />
+        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <Routes>
+            {/* Auth pages are outside AppLayout so they have no nav bars */}
+            <Route
+              path="/login"
+              element={
+                <PublicOnlyRoute>
+                  <Login />
+                </PublicOnlyRoute>
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                <PublicOnlyRoute>
+                  <Signup />
+                </PublicOnlyRoute>
+              }
+            />
+            <Route
+              element={
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="/" element={<Index />} />
+              <Route path="/pantry" element={<Pantry />} />
+              <Route path="/scan" element={<Scan />} />
+              <Route path="/meals" element={<Meals />} />
+              <Route path="/meals/:id" element={<RecipeDetail />} />
+              <Route path="/list" element={<ShoppingList />} />
+              <Route path="/profile" element={<Profile />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 

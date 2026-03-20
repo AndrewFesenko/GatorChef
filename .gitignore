@@ -13,3 +13,5 @@ __pycache__/
 *.swp
 *.swo
 *~
+secret/
+server/.venv/

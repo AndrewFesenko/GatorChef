@@ -1,17 +1,46 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, User } from "lucide-react";
+import { toast } from "sonner";
+import { useAuth } from "@/lib/auth";
 
 const Signup = () => {
     const navigate = useNavigate();
+    const { signup } = useAuth();
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
     const [form, setForm] = useState({ name: "", email: "", password: "", confirm: "" });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // TODO: wire up real auth
-        navigate("/");
+
+        if (!form.name.trim() || !form.email.trim() || !form.password) {
+            toast.error("Name, email, and password are required");
+            return;
+        }
+
+        if (form.password.length < 6) {
+            toast.error("Password must be at least 6 characters");
+            return;
+        }
+
+        if (form.password !== form.confirm) {
+            toast.error("Passwords do not match");
+            return;
+        }
+
+        setIsSubmitting(true);
+        try {
+            await signup(form.name.trim(), form.email.trim(), form.password);
+            toast.success("Account created successfully");
+            navigate("/");
+        } catch (error) {
+            const message = error instanceof Error ? error.message : "Sign up failed";
+            toast.error(message);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -104,9 +133,10 @@ const Signup = () => {
 
                     <button
                         type="submit"
+                        disabled={isSubmitting}
                         className="w-full h-12 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity tap-highlight-none"
                     >
-                        Create Account
+                        {isSubmitting ? "Creating Account..." : "Create Account"}
                     </button>
                 </form>
 
@@ -118,7 +148,7 @@ const Signup = () => {
                 </div>
 
                 {/* Social placeholder */}
-                <button className="w-full h-12 rounded-xl border border-border bg-card text-sm font-medium text-foreground flex items-center justify-center gap-2 hover:bg-surface-hover transition-colors tap-highlight-none">
+                <button type="button" className="w-full h-12 rounded-xl border border-border bg-card text-sm font-medium text-foreground flex items-center justify-center gap-2 hover:bg-surface-hover transition-colors tap-highlight-none">
                     <span>G</span>
                     <span>Continue with Google</span>
                 </button>
