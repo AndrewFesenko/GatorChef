@@ -1,0 +1,15 @@
+services:
+  client:
+    container_name: gatorchef-client
+    build:
+      context: ./client
+      target: dev
+    ports:
+      - "8080:8080"
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+
+  # Add a backend service here once server/ has a real entrypoint and Dockerfile.
