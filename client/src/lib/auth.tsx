@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import {
   EmailAuthProvider,
   createUserWithEmailAndPassword,
+  onIdTokenChanged,
   onAuthStateChanged,
   reauthenticateWithCredential,
   signInWithEmailAndPassword,
@@ -67,6 +68,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       setIsAuthReady(true);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = onIdTokenChanged(auth, async (nextUser) => {
+      if (!nextUser) {
+        localStorage.removeItem(TOKEN_STORAGE_KEY);
+        return;
+      }
+
+      const token = await nextUser.getIdToken();
+      localStorage.setItem(TOKEN_STORAGE_KEY, token);
     });
 
     return unsubscribe;

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
 
 from fastapi import Depends, HTTPException, status
@@ -9,6 +10,7 @@ from app.clients.firestore_client import get_firestore_client
 
 
 bearer_scheme = HTTPBearer(auto_error=False)
+TOKEN_CLOCK_SKEW_SECONDS = int(os.getenv("FIREBASE_TOKEN_CLOCK_SKEW_SECONDS", "10"))
 
 
 @dataclass
@@ -39,7 +41,11 @@ def get_current_user(
     get_firestore_client()
 
     try:
-        decoded = firebase_auth.verify_id_token(token, check_revoked=False)
+        decoded = firebase_auth.verify_id_token(
+            token,
+            check_revoked=False,
+            clock_skew_seconds=TOKEN_CLOCK_SKEW_SECONDS,
+        )
     except Exception as exc:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=f"Invalid token: {exc}") from exc
 
