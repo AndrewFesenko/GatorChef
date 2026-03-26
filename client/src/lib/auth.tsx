@@ -1,11 +1,13 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import {
   EmailAuthProvider,
+  GoogleAuthProvider,
   createUserWithEmailAndPassword,
   onIdTokenChanged,
   onAuthStateChanged,
   reauthenticateWithCredential,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   updatePassword,
   updateProfile,
@@ -27,6 +29,7 @@ type AuthContextValue = {
   isAuthReady: boolean;
   signup: (name: string, email: string, password: string) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
   updateUserProfile: (payload: { displayName: string; photoUrl?: string | null }) => Promise<void>;
   changePassword: (currentPassword: string, nextPassword: string) => Promise<void>;
@@ -145,6 +148,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         await upsertProfile(
           idToken,
           existingProfile?.email ?? credential.user.email ?? email,
+          profileDisplayName,
+          profilePhotoUrl,
+        );
+      },
+      loginWithGoogle: async () => {
+        const provider = new GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: "select_account" });
+
+        const credential = await signInWithPopup(auth, provider);
+        const idToken = await credential.user.getIdToken();
+        localStorage.setItem(TOKEN_STORAGE_KEY, idToken);
+
+        const existingProfile = await fetchProfile(idToken);
+        const profileDisplayName =
+          existingProfile?.display_name ?? credential.user.displayName ?? "GatorChef User";
+        const profilePhotoUrl =
+          existingProfile?.photo_url ?? credential.user.photoURL ?? undefined;
+
+        await upsertProfile(
+          idToken,
+          existingProfile?.email ?? credential.user.email ?? "",
           profileDisplayName,
           profilePhotoUrl,
         );

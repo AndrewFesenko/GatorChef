@@ -6,7 +6,7 @@ import { useAuth } from "@/lib/auth";
 
 const Login = () => {
     const navigate = useNavigate();
-    const { login } = useAuth();
+    const { login, loginWithGoogle } = useAuth();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [form, setForm] = useState({ email: "", password: "" });
@@ -26,6 +26,20 @@ const Login = () => {
             navigate("/");
         } catch (error) {
             const message = error instanceof Error ? error.message : "Sign in failed";
+            toast.error(message);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleGoogleLogin = async () => {
+        setIsSubmitting(true);
+        try {
+            await loginWithGoogle();
+            toast.success("signed in with google");
+            navigate("/");
+        } catch (error) {
+            const message = error instanceof Error ? error.message : "google sign in failed";
             toast.error(message);
         } finally {
             setIsSubmitting(false);
@@ -106,9 +120,14 @@ const Login = () => {
                 </div>
 
                 {/* Social placeholder */}
-                <button type="button" className="w-full h-12 rounded-xl border border-border bg-card text-sm font-medium text-foreground flex items-center justify-center gap-2 hover:bg-surface-hover transition-colors tap-highlight-none">
+                <button
+                    type="button"
+                    onClick={handleGoogleLogin}
+                    disabled={isSubmitting}
+                    className="w-full h-12 rounded-xl border border-border bg-card text-sm font-medium text-foreground flex items-center justify-center gap-2 hover:bg-surface-hover transition-colors tap-highlight-none disabled:opacity-60"
+                >
                     <span>G</span>
-                    <span>Continue with Google</span>
+                    <span>{isSubmitting ? "connecting..." : "Continue with Google"}</span>
                 </button>
 
                 {/* Sign up link */}
