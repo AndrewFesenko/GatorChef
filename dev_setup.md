@@ -119,20 +119,68 @@ Alternatively, point the env var `GLM_OCR_CONFIG` to a config file elsewhere:
 export GLM_OCR_CONFIG=/path/to/my_config.yaml
 ```
 
-### 3. Firebase credentials
+### 3. Frontend Firebase config (client/.env)
 
-Place your Firebase service account JSON in the `secret/` folder (gitignored), or set the env var:
+The frontend needs Firebase credentials to handle user login. Create `client/.env` by copying `.env.example`:
+
+```
+VITE_API_BASE_URL=http://127.0.0.1:8000
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
+```
+
+ALL OF THESE MAP
+  firebaseConfig.apiKey            → VITE_FIREBASE_API_KEY
+  firebaseConfig.authDomain        → VITE_FIREBASE_AUTH_DOMAIN
+  firebaseConfig.projectId         → VITE_FIREBASE_PROJECT_ID
+  firebaseConfig.storageBucket     → VITE_FIREBASE_STORAGE_BUCKET
+  firebaseConfig.messagingSenderId → VITE_FIREBASE_MESSAGING_SENDER_ID
+  firebaseConfig.appId             → VITE_FIREBASE_APP_ID
+
+**Where to get these values:** Firebase Console → your project → **Project Settings** (gear icon) → **General** → scroll to **Your apps** → select the web app → **SDK setup and configuration** → copy the `firebaseConfig` object. Each field maps directly to a `VITE_FIREBASE_*` var.
+
+> **These values are NOT secret.** Unlike the backend service account JSON, these are public client-side identifiers — safe to put in `.env`. Firebase security is enforced by Auth rules and Firestore rules, not by hiding these values.
+
+After creating `client/.env`, restart Vite (`CTRL+C` then `npm run dev`) — it only reads `.env` on startup.
+
+### 4. Backend Firebase credentials (service account)
+
+The backend needs a Firebase service account JSON to verify auth tokens and write to Firestore. This IS a private key — keep it out of git.
+
+Place the JSON file in the project `secret/` folder (`gatorchef/secret/`), or set the env var.
+
+If you want to use a backend `.env` file, create `server/.env` and add:
+
+```env
+GOOGLE_APPLICATION_CREDENTIALS=C:\Users\alejm\Downloads\gatorchef-c7c69-firebase-adminsdk-fbsvc-791b86a30d.json
+```
+
+Then start the backend from the `server` folder.
+
+Alternatively, set the env var directly:
 
 ```bash
 export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 ```
 
-### 4. Start both servers
+**Where to get this:** Firebase Console → Project Settings → **Service accounts** tab → **Generate new private key** → download the JSON.
+
+### 5. Start both servers
 
 ```bash
 # Terminal 1 — Backend
 cd server
 uvicorn app.main:app --reload --port 8000
+
+"NOTE:
+
+If that still fails after installing, use the module form which always works:
+
+python -m uvicorn app.main:app --reload --port 8000"
 
 # Terminal 2 — Frontend
 cd client
@@ -141,7 +189,7 @@ npm run dev
 
 | Service | URL |
 |---------|-----|
-| Frontend | http://localhost:5173 |
+| Frontend | http://localhost:8080 |
 | Backend | http://localhost:8000 |
 | API docs (Swagger) | http://localhost:8000/docs |
 
@@ -149,7 +197,7 @@ npm run dev
 
 ## Testing the autocomplete feature
 
-1. Open the app at http://localhost:5173 and log in.
+1. Open the app at http://localhost:8080 and log in.
 2. Navigate to Pantry.
 3. Tap the "+" button to open Add Ingredient.
 4. Start typing `chick` — a dropdown appears with Chicken, Chicken Breast, Chicken Thighs, etc.
@@ -207,6 +255,7 @@ Expected response:
 
 | Issue | Cause | Fix |
 |-------|-------|-----|
+| `Missing Firebase env var for apiKey` | `client/.env` doesn't exist | Copy `.env.example` → `.env`, fill in Firebase config from Firebase Console, restart Vite |
 | `422 Unprocessable Entity` on upload | `python-multipart` not installed | `pip install python-multipart` |
 | `503 glmocr package is not installed` | `glmocr` not installed | `pip install glmocr` |
 | Dropdown never appears | `/ingredients` returning an error | Check server logs, verify TheMealDB is reachable |

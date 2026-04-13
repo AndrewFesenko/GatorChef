@@ -143,7 +143,7 @@ export default function AutocompleteInput({
           align="start"
           sideOffset={4}
           onOpenAutoFocus={(e) => e.preventDefault()}
-          className="z-50 w-[var(--radix-popover-trigger-width)] max-h-52 overflow-y-auto rounded-lg border border-border bg-card shadow-lg"
+          className="z-[60] w-[var(--radix-popover-trigger-width)] max-h-52 overflow-y-auto rounded-lg border border-border bg-card shadow-lg"
         >
           <ul ref={listRef} role="listbox">
             {filtered.map((item, i) => (

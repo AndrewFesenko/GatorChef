@@ -5,11 +5,14 @@ from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_SECRET_DIR = PROJECT_ROOT.parent / "secret"
-DEFAULT_CREDENTIALS_PATH = next(DEFAULT_SECRET_DIR.glob("*.json"), None)
 
 _firebase_app = None
 _firestore_client = None
+
+
+def _find_default_credentials_path() -> Path | None:
+    secret_dir = PROJECT_ROOT.parent / "secret"
+    return next(secret_dir.glob("*.json"), None)
 
 
 def get_firestore_client():
@@ -28,8 +31,10 @@ def get_firestore_client():
         ) from exc
 
     credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
-    if not credentials_path and DEFAULT_CREDENTIALS_PATH is not None:
-        credentials_path = str(DEFAULT_CREDENTIALS_PATH)
+    if not credentials_path:
+        default_path = _find_default_credentials_path()
+        if default_path is not None:
+            credentials_path = str(default_path)
 
     if not credentials_path:
         raise RuntimeError(
