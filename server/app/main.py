@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.routes.ingredients import router as ingredients_router
 from app.routes.pantry import router as pantry_router
+from app.routes.upload import router as upload_router
 from app.routes.users import router as users_router
 
 
@@ -21,7 +23,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(ingredients_router)
 app.include_router(pantry_router)
+app.include_router(upload_router)
 app.include_router(users_router)
 
 
