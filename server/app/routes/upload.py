@@ -1,40 +1,39 @@
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, status
+from pydantic import BaseModel
 
-from app.deps import verify_firebase_token
-from app.firebase_admin_init import db
-from app.models import PantryItem, ReceiptUploadResponse
-from app.services import ocr_service, receipt_parser, normalizer
+from app.dependencies.auth import AuthenticatedUser, get_current_user
+from app.clients.firestore_client import get_firestore_client
+from app.schemas.pantry import PantryItemResponse
+from app.services.glm_ocr_service import extract_ingredients
 
 router = APIRouter(prefix="/upload", tags=["upload"])
 
 _MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
 
 
+class ReceiptUploadResponse(BaseModel):
+    parsed_items: list[PantryItemResponse]
+
+
 @router.post("/receipt", response_model=ReceiptUploadResponse)
 async def upload_receipt(
     file: UploadFile = File(...),
-    token: dict = Depends(verify_firebase_token),
+    current_user: AuthenticatedUser = Depends(get_current_user),
 ):
-    uid = token["uid"]
-
-    # Read and validate file
     image_bytes = await file.read()
     if len(image_bytes) > _MAX_FILE_SIZE:
-        raise HTTPException(status_code=413, detail="File too large (max 10MB)")
+        raise HTTPException(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail="File too large (max 10MB)")
 
-    # OCR → parse → normalize
-    raw_text = ocr_service.extract_text(image_bytes)
-    parsed_names = receipt_parser.parse(raw_text)
-    normalized_names = [normalizer.normalize(name) for name in parsed_names]
+    names = await extract_ingredients(image_bytes)
 
-    # Write to Firestore and build response
-    pantry_ref = db.collection("users").document(uid).collection("pantry")
-    items: list[PantryItem] = []
+    db = get_firestore_client()
+    pantry_ref = db.collection("users").document(current_user.uid).collection("pantry")
+    items: list[PantryItemResponse] = []
 
-    for name in normalized_names:
+    for name in names:
         doc_ref = pantry_ref.document()
-        item_data = {"name": name, "quantity": 1.0, "unit": ""}
+        item_data = {"name": name, "category": "Produce", "expiry": "unknown"}
         doc_ref.set(item_data)
-        items.append(PantryItem(id=doc_ref.id, **item_data))
+        items.append(PantryItemResponse(id=doc_ref.id, **item_data))
 
-    return ReceiptUploadResponse(raw_text=raw_text, parsed_items=items)
+    return ReceiptUploadResponse(parsed_items=items)
