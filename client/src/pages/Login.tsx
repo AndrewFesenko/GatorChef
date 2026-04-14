@@ -3,13 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
+import BottomSheet from "@/components/BottomSheet";
 
 const Login = () => {
     const navigate = useNavigate();
-    const { login, loginWithGoogle } = useAuth();
+    const { login, loginWithGoogle, sendPasswordReset } = useAuth();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isResetSubmitting, setIsResetSubmitting] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [isResetOpen, setIsResetOpen] = useState(false);
     const [form, setForm] = useState({ email: "", password: "" });
+    const [resetEmail, setResetEmail] = useState("");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -43,6 +47,32 @@ const Login = () => {
             toast.error(message);
         } finally {
             setIsSubmitting(false);
+        }
+    };
+
+    const openResetDialog = () => {
+        setResetEmail(form.email.trim());
+        setIsResetOpen(true);
+    };
+
+    const handlePasswordReset = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!resetEmail.trim()) {
+            toast.error("Enter the email address for your account");
+            return;
+        }
+
+        setIsResetSubmitting(true);
+        try {
+            await sendPasswordReset(resetEmail.trim());
+            toast.success("Password reset email sent. Check your inbox.");
+            setIsResetOpen(false);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : "Could not send reset email";
+            toast.error(message);
+        } finally {
+            setIsResetSubmitting(false);
         }
     };
 
@@ -98,7 +128,11 @@ const Login = () => {
                     </div>
 
                     <div className="text-right">
-                        <button type="button" className="text-xs text-primary font-medium tap-highlight-none">
+                        <button
+                            type="button"
+                            onClick={openResetDialog}
+                            className="text-xs text-primary font-medium tap-highlight-none"
+                        >
                             Forgot password?
                         </button>
                     </div>
@@ -141,6 +175,40 @@ const Login = () => {
                     </button>
                 </p>
             </div>
+
+            <BottomSheet
+                isOpen={isResetOpen}
+                onClose={() => setIsResetOpen(false)}
+                title="Reset password"
+            >
+                <form onSubmit={handlePasswordReset} className="space-y-4">
+                    <p className="text-sm text-muted-foreground">
+                        Enter the email address for your account and we’ll send a password reset link.
+                    </p>
+
+                    <div className="relative">
+                        <Mail
+                            size={15}
+                            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                        />
+                        <input
+                            type="email"
+                            placeholder="Email address"
+                            value={resetEmail}
+                            onChange={(e) => setResetEmail(e.target.value)}
+                            className="w-full h-12 pl-9 pr-4 rounded-xl border border-border bg-card text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={isResetSubmitting}
+                        className="w-full h-12 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity tap-highlight-none disabled:opacity-60"
+                    >
+                        {isResetSubmitting ? "Sending..." : "Send reset link"}
+                    </button>
+                </form>
+            </BottomSheet>
         </div>
     );
 };

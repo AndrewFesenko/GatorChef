@@ -12,6 +12,7 @@ import {
   updatePassword,
   updateProfile,
   type User,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { apiRequest } from "@/lib/api";
@@ -30,6 +31,7 @@ type AuthContextValue = {
   signup: (name: string, email: string, password: string) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
+  sendPasswordReset: (email: string) => Promise<void>;
   logout: () => Promise<void>;
   updateUserProfile: (payload: { displayName: string; photoUrl?: string | null }) => Promise<void>;
   changePassword: (currentPassword: string, nextPassword: string) => Promise<void>;
@@ -177,6 +179,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         await signOut(auth);
         localStorage.removeItem(TOKEN_STORAGE_KEY);
         setProfile(null);
+      },
+      sendPasswordReset: async (email: string) => {
+        const normalizedEmail = email.trim();
+        if (!normalizedEmail) {
+          throw new Error("Email is required to reset your password.");
+        }
+
+        await sendPasswordResetEmail(auth, normalizedEmail);
       },
       updateUserProfile: async ({ displayName, photoUrl }) => {
         const authUser = auth.currentUser;

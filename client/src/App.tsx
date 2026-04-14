@@ -15,7 +15,7 @@ import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicOnlyRoute from "./components/PublicOnlyRoute";
-import { AuthProvider } from "./lib/auth";
+import { AuthProvider } from "@/lib/auth";
 
 const queryClient = new QueryClient();
 

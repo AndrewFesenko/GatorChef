@@ -32,15 +32,21 @@ async function getAuthToken(forceRefresh = false): Promise<string | null> {
 // tiny wrapper so all requests share the same auth and body handling
 async function requestWithToken(path: string, options: RequestOptions, token: string | null): Promise<Response> {
   const { bodyJson, headers, ...rest } = options;
-  const resolvedBody = bodyJson ? JSON.stringify(bodyJson) : rest.body;
+  const resolvedBody = bodyJson !== undefined ? JSON.stringify(bodyJson) : rest.body;
+
+  const resolvedHeaders = new Headers(headers ?? undefined);
+  if (token) {
+    resolvedHeaders.set("Authorization", `Bearer ${token}`);
+  }
+
+  // let the browser set multipart boundaries for formdata automatically
+  if (bodyJson !== undefined) {
+    resolvedHeaders.set("Content-Type", "application/json");
+  }
 
   return fetch(buildApiUrl(path), {
     ...rest,
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...headers,
-    },
+    headers: resolvedHeaders,
     body: resolvedBody,
   });
 }

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Pencil, Plus, ScanLine, Search, Trash2, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ListFilter, Pencil, Plus, ScanLine, Search, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import BottomSheet from "@/components/BottomSheet";
@@ -10,32 +10,47 @@ import { apiRequest } from "@/lib/api";
 interface PantryItem {
   id: string;
   name: string;
-  category: string;
+  category: string | null;
   expiry: string;
+  created_at?: number | null;
 }
 
 const categories = ["All", "Protein", "Produce", "Grain", "Sauce", "Dairy", "Oil"];
+const editableCategories = categories.filter((category) => category !== "All");
+type SortMode = "default" | "newest" | "oldest" | "name";
 
 const Pantry = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const [sortMode, setSortMode] = useState<SortMode>("default");
+  const [isSortMenuOpen, setIsSortMenuOpen] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
   const [ingredients, setIngredients] = useState<PantryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [deletingItemId, setDeletingItemId] = useState<string | null>(null);
 
   const [newName, setNewName] = useState("");
-  const [newCategory, setNewCategory] = useState("Produce");
+  const [newCategory, setNewCategory] = useState("");
   const [newExpiry, setNewExpiry] = useState("");
 
   const { ingredients: mealDbIngredients } = useMealDbIngredients();
 
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
-  const [editCategory, setEditCategory] = useState("Produce");
+  const [editCategory, setEditCategory] = useState("");
   const [editExpiry, setEditExpiry] = useState("");
   const [isSavingEdit, setIsSavingEdit] = useState(false);
+  const sortMenuRef = useRef<HTMLDivElement | null>(null);
+
+  const editingItem = ingredients.find((item) => item.id === editingItemId) ?? null;
+
+  const formatAddedDate = (createdAt?: number | null) => {
+    if (!createdAt) return "Unknown";
+    const date = new Date(createdAt * 1000);
+    if (Number.isNaN(date.getTime())) return "Unknown";
+    return date.toLocaleDateString();
+  };
 
   useEffect(() => {
     const loadPantry = async () => {
@@ -53,6 +68,21 @@ const Pantry = () => {
     void loadPantry();
   }, []);
 
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (!sortMenuRef.current) return;
+      const target = event.target;
+      if (target instanceof Node && !sortMenuRef.current.contains(target)) {
+        setIsSortMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+
   const handleAdd = async () => {
     if (!newName.trim()) return;
 
@@ -61,7 +91,7 @@ const Pantry = () => {
         method: "POST",
         bodyJson: {
           name: newName.trim(),
-          category: newCategory,
+          category: newCategory.trim() || null,
           expiry: newExpiry.trim() || "unknown",
         },
       });
@@ -69,7 +99,7 @@ const Pantry = () => {
       setIngredients((prev) => [createdItem, ...prev]);
       toast.success(`${createdItem.name} added to your pantry!`);
       setNewName("");
-      setNewCategory("Produce");
+      setNewCategory("");
       setNewExpiry("");
       setShowAdd(false);
     } catch (error) {
@@ -81,14 +111,14 @@ const Pantry = () => {
   const openEditSheet = (item: PantryItem) => {
     setEditingItemId(item.id);
     setEditName(item.name);
-    setEditCategory(item.category);
+    setEditCategory(item.category ?? "");
     setEditExpiry(item.expiry === "unknown" ? "" : item.expiry);
   };
 
   const closeEditSheet = () => {
     setEditingItemId(null);
     setEditName("");
-    setEditCategory("Produce");
+    setEditCategory("");
     setEditExpiry("");
     setIsSavingEdit(false);
   };
@@ -102,7 +132,7 @@ const Pantry = () => {
         method: "PUT",
         bodyJson: {
           name: editName.trim(),
-          category: editCategory,
+          category: editCategory.trim() || null,
           expiry: editExpiry.trim() || "unknown",
         },
       });
@@ -142,6 +172,23 @@ const Pantry = () => {
     return matchSearch && matchCategory;
   });
 
+  const sortedFiltered =
+    sortMode === "default"
+      ? filtered
+      : [...filtered].sort((a, b) => {
+        if (sortMode === "name") {
+          return a.name.localeCompare(b.name);
+        }
+
+        const aTime = a.created_at ?? 0;
+        const bTime = b.created_at ?? 0;
+        if (aTime !== bTime) {
+          return sortMode === "newest" ? bTime - aTime : aTime - bTime;
+        }
+
+        return a.name.localeCompare(b.name);
+      });
+
   return (
     <div className="space-y-5 pt-2">
       <div className="flex items-center justify-between">
@@ -180,19 +227,57 @@ const Pantry = () => {
         )}
       </div>
 
-      <div className="flex gap-2 overflow-x-auto hide-scrollbar -mx-4 px-4">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setActiveCategory(cat)}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors tap-highlight-none ${activeCategory === cat
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex flex-wrap gap-2">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors tap-highlight-none ${activeCategory === cat
                 ? "bg-primary text-primary-foreground"
                 : "bg-card border border-border text-muted-foreground"
-              }`}
+                }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        <div ref={sortMenuRef} className="relative shrink-0">
+          <button
+            onClick={() => setIsSortMenuOpen((prev) => !prev)}
+            className="h-8 px-2.5 rounded-lg bg-card border border-border flex items-center gap-1.5 text-xs font-medium text-muted-foreground"
+            title="Sort options"
           >
-            {cat}
+            <ListFilter size={14} />
+            Sort
           </button>
-        ))}
+
+          {isSortMenuOpen && (
+            <div className="absolute right-0 mt-2 w-36 rounded-lg border border-border bg-card shadow-lg p-1 z-20">
+              {[
+                { value: "default", label: "Default" },
+                { value: "newest", label: "Newest first" },
+                { value: "oldest", label: "Oldest first" },
+                { value: "name", label: "Name A-Z" },
+              ].map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => {
+                    setSortMode(option.value as SortMode);
+                    setIsSortMenuOpen(false);
+                  }}
+                  className={`w-full text-left px-2.5 py-1.5 rounded-md text-xs ${sortMode === option.value
+                    ? "bg-primary text-primary-foreground"
+                    : "text-foreground hover:bg-secondary"
+                    }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="rounded-xl bg-card border border-border divide-y divide-border">
@@ -203,7 +288,7 @@ const Pantry = () => {
         )}
 
         {!isLoading &&
-          filtered.map((ing) => (
+          sortedFiltered.map((ing) => (
             <div key={ing.id} className="flex items-center justify-between px-4 py-3">
               <div>
                 <p className="text-sm font-medium text-foreground">{ing.name}</p>
@@ -211,7 +296,7 @@ const Pantry = () => {
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-[10px] font-medium text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">
-                  {ing.category}
+                  {ing.category || "No category"}
                 </span>
                 <button
                   onClick={() => openEditSheet(ing)}
@@ -232,7 +317,7 @@ const Pantry = () => {
             </div>
           ))}
 
-        {!isLoading && filtered.length === 0 && (
+        {!isLoading && sortedFiltered.length === 0 && (
           <div className="px-4 py-10 text-center">
             <p className="text-sm text-muted-foreground">No ingredients found</p>
           </div>
@@ -253,22 +338,29 @@ const Pantry = () => {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-muted-foreground">Category *</label>
+            <label className="text-xs font-medium text-muted-foreground">Category (optional)</label>
             <div className="flex flex-wrap gap-2">
-              {categories
-                .filter((c) => c !== "All")
-                .map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setNewCategory(cat)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors tap-highlight-none ${newCategory === cat
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-secondary border border-border text-muted-foreground"
-                      }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
+              <button
+                onClick={() => setNewCategory("")}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors tap-highlight-none ${newCategory === ""
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-secondary border border-border text-muted-foreground"
+                  }`}
+              >
+                None
+              </button>
+              {editableCategories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setNewCategory(cat)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors tap-highlight-none ${newCategory === cat
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary border border-border text-muted-foreground"
+                    }`}
+                >
+                  {cat}
+                </button>
+              ))}
             </div>
           </div>
 
@@ -309,22 +401,29 @@ const Pantry = () => {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-muted-foreground">Category *</label>
+            <label className="text-xs font-medium text-muted-foreground">Category (optional)</label>
             <div className="flex flex-wrap gap-2">
-              {categories
-                .filter((c) => c !== "All")
-                .map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setEditCategory(cat)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors tap-highlight-none ${editCategory === cat
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-secondary border border-border text-muted-foreground"
-                      }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
+              <button
+                onClick={() => setEditCategory("")}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors tap-highlight-none ${editCategory === ""
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-secondary border border-border text-muted-foreground"
+                  }`}
+              >
+                None
+              </button>
+              {editableCategories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setEditCategory(cat)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors tap-highlight-none ${editCategory === cat
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary border border-border text-muted-foreground"
+                    }`}
+                >
+                  {cat}
+                </button>
+              ))}
             </div>
           </div>
 
@@ -339,6 +438,11 @@ const Pantry = () => {
               onChange={(e) => setEditExpiry(e.target.value)}
               className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
             />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-muted-foreground">Added</label>
+            <p className="text-sm text-foreground">{formatAddedDate(editingItem?.created_at)}</p>
           </div>
 
           <button
