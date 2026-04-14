@@ -3,6 +3,8 @@ import { Pencil, Plus, ScanLine, Search, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import BottomSheet from "@/components/BottomSheet";
+import AutocompleteInput from "@/components/AutocompleteInput";
+import { useMealDbIngredients } from "@/hooks/useMealDbIngredients";
 import { apiRequest } from "@/lib/api";
 
 interface PantryItem {
@@ -26,6 +28,8 @@ const Pantry = () => {
   const [newName, setNewName] = useState("");
   const [newCategory, setNewCategory] = useState("Produce");
   const [newExpiry, setNewExpiry] = useState("");
+
+  const { ingredients: mealDbIngredients } = useMealDbIngredients();
 
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
@@ -239,17 +243,12 @@ const Pantry = () => {
         <div className="space-y-4">
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-muted-foreground">Item name *</label>
-            <input
-              type="text"
-              placeholder="e.g. Chicken breast"
+            <AutocompleteInput
               value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  void handleAdd();
-                }
-              }}
-              className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+              onChange={setNewName}
+              onSubmit={() => void handleAdd()}
+              suggestions={mealDbIngredients}
+              placeholder="e.g. Chicken breast"
             />
           </div>
 
@@ -300,17 +299,12 @@ const Pantry = () => {
         <div className="space-y-4">
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-muted-foreground">Item name *</label>
-            <input
-              type="text"
-              placeholder="e.g. Chicken breast"
+            <AutocompleteInput
               value={editName}
-              onChange={(e) => setEditName(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  void handleSaveEdit();
-                }
-              }}
-              className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+              onChange={setEditName}
+              onSubmit={() => void handleSaveEdit()}
+              suggestions={mealDbIngredients}
+              placeholder="e.g. Chicken breast"
             />
           </div>
 

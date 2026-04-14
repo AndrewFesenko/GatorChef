@@ -1,4 +1,8 @@
+python-dotenv>=1.0.0
 fastapi==0.116.1
 uvicorn==0.35.0
 firebase-admin==7.1.0
 email-validator==2.3.0
+httpx>=0.27.0
+glmocr>=0.1.0
+python-multipart>=0.0.9
