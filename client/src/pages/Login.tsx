@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
+import { getFirebaseAuthErrorPresentation } from "@/lib/firebaseAuthErrors";
 import BottomSheet from "@/components/BottomSheet";
 
 const Login = () => {
@@ -14,9 +15,19 @@ const Login = () => {
     const [isResetOpen, setIsResetOpen] = useState(false);
     const [form, setForm] = useState({ email: "", password: "" });
     const [resetEmail, setResetEmail] = useState("");
+    const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
+    const [formError, setFormError] = useState("");
+
+    const updateField = (field: "email" | "password", value: string) => {
+        setForm((prev) => ({ ...prev, [field]: value }));
+        setFormError("");
+        setFieldErrors((prev) => ({ ...prev, [field]: undefined }));
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setFormError("");
+        setFieldErrors({});
 
         if (!form.email.trim() || !form.password) {
             toast.error("Email and password are required");
@@ -29,8 +40,12 @@ const Login = () => {
             toast.success("Signed in successfully");
             navigate("/");
         } catch (error) {
-            const message = error instanceof Error ? error.message : "Sign in failed";
-            toast.error(message);
+            const authError = getFirebaseAuthErrorPresentation(error);
+            if (authError.field) {
+                setFieldErrors({ [authError.field]: authError.message });
+            } else {
+                setFormError(authError.message);
+            }
         } finally {
             setIsSubmitting(false);
         }
@@ -43,8 +58,8 @@ const Login = () => {
             toast.success("signed in with google");
             navigate("/");
         } catch (error) {
-            const message = error instanceof Error ? error.message : "google sign in failed";
-            toast.error(message);
+            const authError = getFirebaseAuthErrorPresentation(error);
+            toast.error(authError.message);
         } finally {
             setIsSubmitting(false);
         }
@@ -100,10 +115,15 @@ const Login = () => {
                             type="email"
                             placeholder="Email address"
                             value={form.email}
-                            onChange={(e) => setForm({ ...form, email: e.target.value })}
-                            className="w-full h-12 pl-9 pr-4 rounded-xl border border-border bg-card text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                            onChange={(e) => updateField("email", e.target.value)}
+                            aria-invalid={Boolean(fieldErrors.email)}
+                            className={`w-full h-12 pl-9 pr-4 rounded-xl border bg-card text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring ${fieldErrors.email ? "border-destructive focus:ring-destructive/30" : "border-border"
+                                }`}
                         />
                     </div>
+                    {fieldErrors.email && (
+                        <p className="px-1 text-xs text-destructive">{fieldErrors.email}</p>
+                    )}
 
                     {/* Password */}
                     <div className="relative">
@@ -115,8 +135,10 @@ const Login = () => {
                             type={showPassword ? "text" : "password"}
                             placeholder="Password"
                             value={form.password}
-                            onChange={(e) => setForm({ ...form, password: e.target.value })}
-                            className="w-full h-12 pl-9 pr-10 rounded-xl border border-border bg-card text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                            onChange={(e) => updateField("password", e.target.value)}
+                            aria-invalid={Boolean(fieldErrors.password)}
+                            className={`w-full h-12 pl-9 pr-10 rounded-xl border bg-card text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring ${fieldErrors.password ? "border-destructive focus:ring-destructive/30" : "border-border"
+                                }`}
                         />
                         <button
                             type="button"
@@ -126,6 +148,15 @@ const Login = () => {
                             {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
                         </button>
                     </div>
+                    {fieldErrors.password && (
+                        <p className="px-1 text-xs text-destructive">{fieldErrors.password}</p>
+                    )}
+
+                    {formError && (
+                        <p className="rounded-xl border border-destructive/20 bg-destructive/5 px-3 py-2 text-sm text-destructive">
+                            {formError}
+                        </p>
+                    )}
 
                     <div className="text-right">
                         <button

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, User } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
+import { getFirebaseAuthErrorPresentation } from "@/lib/firebaseAuthErrors";
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -36,8 +37,8 @@ const Signup = () => {
             toast.success("Account created successfully");
             navigate("/");
         } catch (error) {
-            const message = error instanceof Error ? error.message : "Sign up failed";
-            toast.error(message);
+            const authError = getFirebaseAuthErrorPresentation(error);
+            toast.error(authError.message);
         } finally {
             setIsSubmitting(false);
         }
