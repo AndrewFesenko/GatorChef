@@ -6,3 +6,7 @@ email-validator==2.3.0
 httpx>=0.27.0
 glmocr>=0.1.0
 python-multipart>=0.0.9
+google-cloud-vision>=3.7.0
+rapidfuzz>=3.9.0
+pytest>=8.0.0
+pytest-asyncio>=0.23.0

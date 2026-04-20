@@ -8,7 +8,9 @@ class PantryItemBase(BaseModel):
 
 
 class PantryItemCreate(PantryItemBase):
-    pass
+    # Optional provenance fields populated when items are created from a scan session.
+    source: str | None = Field(default=None)
+    source_ref: str | None = Field(default=None)
 
 
 class PantryItemUpdate(PantryItemBase):

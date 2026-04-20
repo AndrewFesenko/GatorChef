@@ -4,6 +4,8 @@ import { Camera, QrCode, Upload, Receipt } from "lucide-react";
 import { toast } from "sonner";
 
 import { apiRequest } from "@/lib/api";
+import AutocompleteInput from "@/components/AutocompleteInput";
+import { useMealDbIngredients } from "@/hooks/useMealDbIngredients";
 
 type ScanMode = "receipt" | "qr";
 
@@ -14,16 +16,36 @@ type PantryItem = {
   expiry: string;
 };
 
+type ExtractedItem = {
+  name: string;
+  source_line: string;
+  match_kind: string;
+};
+
 type ReceiptUploadResponse = {
+  session_id: string;
   raw_text: string;
-  parsed_items: Array<{ name: string }>;
+  extracted_items: ExtractedItem[];
+  unresolved: string[];
+  warnings: string[];
+};
+
+type SessionInitResponse = {
+  session_id: string;
+};
+
+type BatchPantryResponse = {
+  created: PantryItem[];
 };
 
 type ReceiptSessionState = {
   receiptFileName: string;
   receiptPreviewUrl: string;
   rawText: string;
-  extractedItems: string[];
+  sessionId: string;
+  extractedItems: ExtractedItem[];
+  unresolved: string[];
+  warnings: string[];
   addedItems: string[];
 };
 
@@ -51,6 +73,36 @@ const readFileAsDataUrl = (file: File) =>
     reader.readAsDataURL(file);
   });
 
+const readFileAsArrayBuffer = (file: File) =>
+  new Promise<ArrayBuffer>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result;
+      if (result instanceof ArrayBuffer) {
+        resolve(result);
+      } else {
+        reject(new Error("Unexpected result type reading file"));
+      }
+    };
+    reader.onerror = () => reject(reader.error ?? new Error("Unable to read file buffer"));
+    reader.readAsArrayBuffer(file);
+  });
+
+const computeSha256Hex = async (buffer: ArrayBuffer): Promise<string> => {
+  const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
+  const bytes = new Uint8Array(hashBuffer);
+  return Array.from(bytes)
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+};
+
+const isValidExtractedItem = (item: unknown): item is ExtractedItem =>
+  typeof item === "object" &&
+  item !== null &&
+  typeof (item as Record<string, unknown>).name === "string" &&
+  typeof (item as Record<string, unknown>).source_line === "string" &&
+  typeof (item as Record<string, unknown>).match_kind === "string";
+
 const loadReceiptSessionState = (): ReceiptSessionState | null => {
   try {
     const raw = sessionStorage.getItem(RECEIPT_SESSION_STORAGE_KEY);
@@ -61,8 +113,15 @@ const loadReceiptSessionState = (): ReceiptSessionState | null => {
       receiptFileName: typeof parsed.receiptFileName === "string" ? parsed.receiptFileName : "",
       receiptPreviewUrl: typeof parsed.receiptPreviewUrl === "string" ? parsed.receiptPreviewUrl : "",
       rawText: typeof parsed.rawText === "string" ? parsed.rawText : "",
+      sessionId: typeof parsed.sessionId === "string" ? parsed.sessionId : "",
       extractedItems: Array.isArray(parsed.extractedItems)
-        ? parsed.extractedItems.filter((item): item is string => typeof item === "string")
+        ? parsed.extractedItems.filter(isValidExtractedItem)
+        : [],
+      unresolved: Array.isArray(parsed.unresolved)
+        ? parsed.unresolved.filter((item): item is string => typeof item === "string")
+        : [],
+      warnings: Array.isArray(parsed.warnings)
+        ? parsed.warnings.filter((item): item is string => typeof item === "string")
         : [],
       addedItems: Array.isArray(parsed.addedItems)
         ? parsed.addedItems.filter((item): item is string => typeof item === "string")
@@ -93,7 +152,6 @@ type BarcodeDetectorLike = {
   detect: (source: ImageBitmapSource) => Promise<Array<{ rawValue?: string }>>;
 };
 
-// todo if we add receipt confidence later only map category for high-confidence matches
 const DEFAULT_CATEGORY: string | null = null;
 const DEFAULT_EXPIRY = "unknown";
 
@@ -146,19 +204,62 @@ function extractQrItems(rawValue: string): string[] {
   return [text];
 }
 
+// Badge shown on fuzzy and glm_fallback items; "exact" gets no badge
+function MatchKindBadge({ matchKind }: { matchKind: string }) {
+  if (matchKind === "exact") return null;
+
+  if (matchKind === "fuzzy") {
+    return (
+      <span
+        title="fuzzy matched"
+        className="ml-1.5 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-secondary text-muted-foreground border border-border"
+      >
+        ~
+      </span>
+    );
+  }
+
+  if (matchKind === "glm_fallback") {
+    return (
+      <span
+        title="identified by AI"
+        className="ml-1.5 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-secondary text-muted-foreground border border-border"
+      >
+        AI
+      </span>
+    );
+  }
+
+  return null;
+}
+
 const Scan = () => {
   const location = useLocation();
   const initialMode = (location.state as { mode?: ScanMode } | null)?.mode ?? "receipt";
   const [mode, setMode] = useState<ScanMode>(initialMode);
 
+  const { ingredients } = useMealDbIngredients();
+
   const [isUploading, setIsUploading] = useState(false);
   const [receiptFileName, setReceiptFileName] = useState<string>("");
   const [receiptPreviewUrl, setReceiptPreviewUrl] = useState<string>("");
   const [rawText, setRawText] = useState("");
-  const [extractedItems, setExtractedItems] = useState<string[]>([]);
-  const [addingItemName, setAddingItemName] = useState<string | null>(null);
+  const [sessionId, setSessionId] = useState<string>("");
+  const [extractedItems, setExtractedItems] = useState<ExtractedItem[]>([]);
+  const [unresolved, setUnresolved] = useState<string[]>([]);
+  const [warnings, setWarnings] = useState<string[]>([]);
+
+  // checkedNames tracks which extracted items are selected for batch add
+  const [checkedNames, setCheckedNames] = useState<Set<string>>(new Set());
   const [addedItems, setAddedItems] = useState<Set<string>>(new Set());
   const [isAddingAll, setIsAddingAll] = useState(false);
+  const [addingItemName, setAddingItemName] = useState<string | null>(null);
+
+  // per-unresolved-row inline autocomplete state
+  const [unresolvedInputs, setUnresolvedInputs] = useState<Record<string, string>>({});
+  const [unresolvedOpen, setUnresolvedOpen] = useState<Record<string, boolean>>({});
+  const [unresolvedAdding, setUnresolvedAdding] = useState<Record<string, boolean>>({});
+  const [unresolvedAdded, setUnresolvedAdded] = useState<Set<string>>(new Set());
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -175,12 +276,34 @@ const Scan = () => {
 
   const canUseBarcodeDetector = typeof window !== "undefined" && "BarcodeDetector" in window;
 
+  const buildSessionSnapshot = (
+    overrides: Partial<ReceiptSessionState> = {}
+  ): ReceiptSessionState => ({
+    receiptFileName,
+    receiptPreviewUrl,
+    rawText,
+    sessionId,
+    extractedItems,
+    unresolved,
+    warnings,
+    addedItems: Array.from(addedItems),
+    ...overrides,
+  });
+
   const resetReceiptState = () => {
     setReceiptFileName("");
     setReceiptPreviewUrl("");
     setRawText("");
+    setSessionId("");
     setExtractedItems([]);
+    setUnresolved([]);
+    setWarnings([]);
+    setCheckedNames(new Set());
     setAddedItems(new Set());
+    setUnresolvedInputs({});
+    setUnresolvedOpen({});
+    setUnresolvedAdding({});
+    setUnresolvedAdded(new Set());
     clearReceiptSessionState();
   };
 
@@ -191,8 +314,19 @@ const Scan = () => {
     setReceiptFileName(saved.receiptFileName);
     setReceiptPreviewUrl(saved.receiptPreviewUrl);
     setRawText(saved.rawText);
+    setSessionId(saved.sessionId);
     setExtractedItems(saved.extractedItems);
-    setAddedItems(new Set(saved.addedItems));
+    setUnresolved(saved.unresolved);
+    setWarnings(saved.warnings);
+
+    const savedAdded = new Set(saved.addedItems);
+    setAddedItems(savedAdded);
+
+    // default all non-added extracted items to checked
+    const defaultChecked = new Set(
+      saved.extractedItems.map((i) => i.name).filter((n) => !savedAdded.has(n))
+    );
+    setCheckedNames(defaultChecked);
   }, []);
 
   const addPantryItem = async (name: string) => {
@@ -226,40 +360,76 @@ const Scan = () => {
     setIsUploading(true);
     setReceiptFileName(file.name);
     setRawText("");
+    setSessionId("");
     setExtractedItems([]);
+    setUnresolved([]);
+    setWarnings([]);
+    setCheckedNames(new Set());
     setAddedItems(new Set());
+    setUnresolvedInputs({});
+    setUnresolvedOpen({});
+    setUnresolvedAdding({});
+    setUnresolvedAdded(new Set());
 
     try {
-      const previewUrl = file.type.startsWith("image/")
-        ? await readFileAsDataUrl(file).catch(() => "")
-        : "";
+      const [previewUrl, arrayBuffer] = await Promise.all([
+        file.type.startsWith("image/") ? readFileAsDataUrl(file).catch(() => "") : Promise.resolve(""),
+        readFileAsArrayBuffer(file),
+      ]);
 
       setReceiptPreviewUrl(previewUrl);
 
+      // Step 1: compute SHA-256 and initialise session
+      const imageHash = await computeSha256Hex(arrayBuffer);
+      const sessionInit = await apiRequest<SessionInitResponse>("/upload/session", {
+        method: "POST",
+        bodyJson: { image_hash: imageHash },
+      });
+
+      const resolvedSessionId = sessionInit.session_id;
+      setSessionId(resolvedSessionId);
+
+      // Step 2: upload the file with the session id
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("session_id", resolvedSessionId);
 
       const response = await apiRequest<ReceiptUploadResponse>("/upload/receipt", {
         method: "POST",
         body: formData,
       });
 
-      const names = response.parsed_items
-        .map((item) => item.name.trim())
-        .filter((name) => Boolean(name));
+      const items = Array.isArray(response.extracted_items)
+        ? response.extracted_items.filter(isValidExtractedItem)
+        : [];
+      const resolvedUnresolved = Array.isArray(response.unresolved)
+        ? response.unresolved.filter((s): s is string => typeof s === "string")
+        : [];
+      const resolvedWarnings = Array.isArray(response.warnings)
+        ? response.warnings.filter((s): s is string => typeof s === "string")
+        : [];
 
+      setExtractedItems(items);
+      setUnresolved(resolvedUnresolved);
+      setWarnings(resolvedWarnings);
       setRawText(response.raw_text ?? "");
-      setExtractedItems(names);
+
+      // default all items checked
+      setCheckedNames(new Set(items.map((i) => i.name)));
+
       saveReceiptSessionState({
         receiptFileName: file.name,
         receiptPreviewUrl: previewUrl,
         rawText: response.raw_text ?? "",
-        extractedItems: names,
+        sessionId: resolvedSessionId,
+        extractedItems: items,
+        unresolved: resolvedUnresolved,
+        warnings: resolvedWarnings,
         addedItems: [],
       });
 
-      if (names.length > 0) {
-        toast.success(`Extracted ${names.length} item${names.length === 1 ? "" : "s"}`);
+      if (items.length > 0) {
+        toast.success(`Extracted ${items.length} item${items.length === 1 ? "" : "s"}`);
       } else {
         toast.error("No grocery items were detected from this receipt");
       }
@@ -273,21 +443,30 @@ const Scan = () => {
     }
   };
 
+  const toggleItemChecked = (name: string) => {
+    setCheckedNames((prev) => {
+      const next = new Set(prev);
+      if (next.has(name)) {
+        next.delete(name);
+      } else {
+        next.add(name);
+      }
+      return next;
+    });
+  };
+
   const handleAddSingleExtractedItem = async (name: string) => {
     if (addedItems.has(name)) return;
     setAddingItemName(name);
     try {
-      await addPantryItem(name);
+      await apiRequest<BatchPantryResponse>("/pantry/batch", {
+        method: "POST",
+        bodyJson: { session_id: sessionId, items: [{ name }] },
+      });
       setAddedItems((prev) => {
         const next = new Set(prev);
         next.add(name);
-        saveReceiptSessionState({
-          receiptFileName,
-          receiptPreviewUrl,
-          rawText,
-          extractedItems,
-          addedItems: Array.from(next),
-        });
+        saveReceiptSessionState(buildSessionSnapshot({ addedItems: Array.from(next) }));
         return next;
       });
       toast.success(`${name} added to pantry`);
@@ -299,45 +478,67 @@ const Scan = () => {
     }
   };
 
-  const handleAddAllExtractedItems = async () => {
-    const pending = extractedItems.filter((item) => !addedItems.has(item));
+  const handleAddCheckedItems = async () => {
+    const pending = extractedItems
+      .map((i) => i.name)
+      .filter((name) => checkedNames.has(name) && !addedItems.has(name));
+
     if (pending.length === 0) {
-      toast.success("All extracted items are already added");
+      toast.success("All selected items are already added");
       return;
     }
 
     setIsAddingAll(true);
     try {
-      const results = await Promise.allSettled(pending.map((item) => addPantryItem(item)));
-      const succeeded = results.filter((result) => result.status === "fulfilled").length;
-      const failed = results.length - succeeded;
+      await apiRequest<BatchPantryResponse>("/pantry/batch", {
+        method: "POST",
+        bodyJson: {
+          session_id: sessionId,
+          items: pending.map((name) => ({ name })),
+        },
+      });
 
-      if (succeeded > 0) {
-        setAddedItems((prev) => {
-          const next = new Set(prev);
-          for (let i = 0; i < results.length; i += 1) {
-            if (results[i].status === "fulfilled") {
-              next.add(pending[i]);
-            }
-          }
-          saveReceiptSessionState({
-            receiptFileName,
-            receiptPreviewUrl,
-            rawText,
-            extractedItems,
-            addedItems: Array.from(next),
-          });
-          return next;
-        });
-      }
+      setAddedItems((prev) => {
+        const next = new Set(prev);
+        for (const name of pending) {
+          next.add(name);
+        }
+        saveReceiptSessionState(buildSessionSnapshot({ addedItems: Array.from(next) }));
+        return next;
+      });
 
-      if (failed === 0) {
-        toast.success(`Added ${succeeded} item${succeeded === 1 ? "" : "s"} to pantry`);
-      } else {
-        toast.error(`Added ${succeeded}, failed ${failed}. Please retry failed items.`);
-      }
+      toast.success(`Added ${pending.length} item${pending.length === 1 ? "" : "s"} to pantry`);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Batch add failed";
+      toast.error(message);
     } finally {
       setIsAddingAll(false);
+    }
+  };
+
+  const handleUnresolvedAutocompleteChange = (rawLine: string, value: string) => {
+    setUnresolvedInputs((prev) => ({ ...prev, [rawLine]: value }));
+    setUnresolvedOpen((prev) => ({ ...prev, [rawLine]: Boolean(value.trim()) }));
+  };
+
+  const handleUnresolvedAdd = async (rawLine: string) => {
+    const name = (unresolvedInputs[rawLine] ?? "").trim();
+    if (!name) return;
+
+    setUnresolvedAdding((prev) => ({ ...prev, [rawLine]: true }));
+    try {
+      await addPantryItem(name);
+      setUnresolvedAdded((prev) => {
+        const next = new Set(prev);
+        next.add(rawLine);
+        return next;
+      });
+      toast.success(`${name} added to pantry`);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to add item";
+      toast.error(message);
+    } finally {
+      setUnresolvedAdding((prev) => ({ ...prev, [rawLine]: false }));
     }
   };
 
@@ -478,6 +679,10 @@ const Scan = () => {
 
   const qrItems = extractQrItems(lastQrRawValue);
 
+  const pendingCheckedCount = extractedItems.filter(
+    (i) => checkedNames.has(i.name) && !addedItems.has(i.name)
+  ).length;
+
   return (
     <div className="space-y-6 pt-2">
       <h1 className="text-xl font-bold text-foreground">Scan</h1>
@@ -540,14 +745,25 @@ const Scan = () => {
             {receiptFileName && <p className="text-xs text-muted-foreground">Selected: {receiptFileName}</p>}
           </div>
 
-          {/* extracted items */}
+          {/* Section 1: Warnings banner */}
+          {warnings.length > 0 && (
+            <div className="rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 space-y-1">
+              {warnings.map((warning, index) => (
+                <p key={index} className="text-sm text-amber-800">
+                  {warning}
+                </p>
+              ))}
+            </div>
+          )}
+
+          {/* Section 2: Extracted Items */}
           <div>
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-semibold text-foreground">Extracted Items</h3>
               {extractedItems.length > 0 && (
                 <button
-                  onClick={() => void handleAddAllExtractedItems()}
-                  disabled={isAddingAll}
+                  onClick={() => void handleAddCheckedItems()}
+                  disabled={isAddingAll || pendingCheckedCount === 0}
                   className="text-xs text-primary font-medium disabled:opacity-60"
                 >
                   {isAddingAll ? "Adding..." : "Add All"}
@@ -563,16 +779,30 @@ const Scan = () => {
               )}
 
               {extractedItems.map((item) => {
-                const wasAdded = addedItems.has(item);
-                const isAddingThis = addingItemName === item;
+                const wasAdded = addedItems.has(item.name);
+                const isAddingThis = addingItemName === item.name;
+                const isChecked = checkedNames.has(item.name);
 
                 return (
-                  <div key={item} className="flex items-center justify-between px-4 py-3 gap-2">
-                    <span className="text-sm text-foreground break-words">{item}</span>
+                  <div key={item.name} className="flex items-center justify-between px-4 py-3 gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <input
+                        type="checkbox"
+                        checked={isChecked && !wasAdded}
+                        disabled={wasAdded}
+                        onChange={() => toggleItemChecked(item.name)}
+                        className="h-4 w-4 rounded border-border accent-primary flex-shrink-0"
+                        aria-label={`Select ${item.name}`}
+                      />
+                      <span className="text-sm text-foreground break-words">
+                        {item.name}
+                        <MatchKindBadge matchKind={item.match_kind} />
+                      </span>
+                    </div>
                     <button
-                      onClick={() => void handleAddSingleExtractedItem(item)}
+                      onClick={() => void handleAddSingleExtractedItem(item.name)}
                       disabled={wasAdded || isAddingThis || isAddingAll}
-                      className="text-xs font-medium px-2.5 py-1 rounded-md border border-border bg-secondary text-foreground disabled:opacity-50"
+                      className="text-xs font-medium px-2.5 py-1 rounded-md border border-border bg-secondary text-foreground disabled:opacity-50 flex-shrink-0"
                     >
                       {wasAdded ? "Added" : isAddingThis ? "Adding..." : "+ Add"}
                     </button>
@@ -588,6 +818,68 @@ const Scan = () => {
               </details>
             )}
           </div>
+
+          {/* Section 3: Unmatched Lines */}
+          {unresolved.length > 0 && (
+            <div>
+              <h3 className="text-sm font-semibold text-foreground mb-1">
+                Couldn't match{" "}
+                <span className="text-muted-foreground font-normal">({unresolved.length})</span>
+              </h3>
+              <p className="text-xs text-muted-foreground mb-3">
+                These lines from the receipt couldn't be identified as ingredients.
+              </p>
+              <div className="rounded-xl bg-card border border-border divide-y divide-border">
+                {unresolved.map((rawLine) => {
+                  const inputValue = unresolvedInputs[rawLine] ?? "";
+                  const isOpen = unresolvedOpen[rawLine] ?? false;
+                  const isAdding = unresolvedAdding[rawLine] ?? false;
+                  const wasAdded = unresolvedAdded.has(rawLine);
+
+                  return (
+                    <div key={rawLine} className="px-4 py-3 space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-sm text-muted-foreground break-words">{rawLine}</span>
+                        {!isOpen && !wasAdded && (
+                          <button
+                            onClick={() =>
+                              setUnresolvedOpen((prev) => ({ ...prev, [rawLine]: true }))
+                            }
+                            className="text-xs font-medium px-2.5 py-1 rounded-md border border-border bg-secondary text-foreground flex-shrink-0"
+                          >
+                            + Add manually
+                          </button>
+                        )}
+                        {wasAdded && (
+                          <span className="text-xs text-muted-foreground flex-shrink-0">Added</span>
+                        )}
+                      </div>
+                      {isOpen && !wasAdded && (
+                        <div className="flex items-start gap-2">
+                          <div className="flex-1">
+                            <AutocompleteInput
+                              value={inputValue}
+                              onChange={(val) => handleUnresolvedAutocompleteChange(rawLine, val)}
+                              onSubmit={() => void handleUnresolvedAdd(rawLine)}
+                              suggestions={ingredients}
+                              placeholder="Search ingredient..."
+                            />
+                          </div>
+                          <button
+                            onClick={() => void handleUnresolvedAdd(rawLine)}
+                            disabled={!inputValue.trim() || isAdding}
+                            className="text-xs font-medium px-2.5 py-1.5 rounded-md bg-primary text-primary-foreground disabled:opacity-50 flex-shrink-0"
+                          >
+                            {isAdding ? "Adding..." : "Add"}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className="space-y-5">
