@@ -1,0 +1,2065 @@
+{
+  "0.jpg": {
+    "raw_text": "WAL-MART®\nALWAYS LOW PRICES.\nAlways\nSUPERCENTER\nOPEN 24 HOURS\nMANAGER. TBA\n( 515 ) 986 - 1783\nST# 5748 OP# 00000158 TE# 14 TR# 03178\nBANANAS\n000000004011KF\n0.41 lb @ 1 lb /0.49\n0.20 N\nFRAP\n001200010451 F\n5.48 N\nDISCOUNT GIVEN\n0.57\nSUBTOTAL\n5.11\nTOTAL\n5.11\nCASH TEND\n11.00\nCHANGE DUE\n5.89\n# ITEMS SOLD 2\nTC# 5679 8348 6485 7828 2003\nTHANK YOU FOR SHOPPING WITH US\nNATHANIEL BUSH\nShop at Walmart & Get\nYour Back to School List for Less.\n08/20/10\n13:12:01",
+    "resolved": [
+      {
+        "name": "Banana",
+        "kind": "fuzzy",
+        "source": "BANANAS"
+      }
+    ],
+    "unresolved": [
+      {
+        "raw": "WAL-MART®",
+        "cleaned": "Wal-Mart®",
+        "expanded": "wal-mart®"
+      },
+      {
+        "raw": "Always",
+        "cleaned": "Always",
+        "expanded": "always"
+      },
+      {
+        "raw": "SUPERCENTER",
+        "cleaned": "Supercenter",
+        "expanded": "supercenter"
+      },
+      {
+        "raw": "OPEN 24 HOURS",
+        "cleaned": "Open Hours",
+        "expanded": "open hours"
+      },
+      {
+        "raw": "000000004011KF",
+        "cleaned": "000000004011Kf",
+        "expanded": "000000004011kf"
+      },
+      {
+        "raw": "FRAP",
+        "cleaned": "Frap",
+        "expanded": "frap"
+      },
+      {
+        "raw": "DISCOUNT GIVEN",
+        "cleaned": "Discount Given",
+        "expanded": "discount given"
+      },
+      {
+        "raw": "NATHANIEL BUSH",
+        "cleaned": "Nathaniel Bush",
+        "expanded": "nathaniel bush"
+      },
+      {
+        "raw": "Your Back to School List for Less.",
+        "cleaned": "Your Back To School List For Less",
+        "expanded": "your back to school list for less"
+      }
+    ]
+  },
+  "1.jpg": {
+    "raw_text": "TRADER JOE'S\n2001 Greenville Ave\nDallas TX 75206\nStore #403\n(469) 334-0614\nOPEN 8:00AM TO 9:00PM DAILY\nR-CARROTS SHREDDED 10 OZ\n1.29\nR-CUCUMBERS PERSIAN 1 LB\n1.99\nTOMATOES CRUSHED NO SALT\n1.59\nTOMATOES WHOLE NO SALT W/BASIL\n1.59\nORGANIC OLD FASHIONED OATMEAL\n2.69\nMINI-PEARL TOMATOES..\n2.49\nPKG SHREDDED MOZZARELLA LITE T 3.99\nEGGS 1 DOZ ORGANIC BROWN.\n3.79\nBEANS GARBANZO\n0.89\nSPROUTED CA STYLE\n2.99\nA-AVOCADOS HASS BAG 4CT\n3.99\nA-APPLE BAG JAZZ 2 LB\n2.99\nA-PEPPER BELL EACH XL RED\n0.99\nGROCERY NON TAXABLE\n0.98\n2 @ 0.49\nBANANAS ORGANIC\n0.87\n3EA @ 0.29/EA\nCREAMY SALTED PEANUT BUTTER\n2.49\nWHL WHT PITA BREAD\n1.69\nGROCERY NON TAXABLE\n1.38\n2 @ 0.69\nSUBTOTAL\n$38.68\nTOTAL\nCASH\nCHANGE\nITEMS 22\n$38.68\n$40.00\n$1.32\nHiggins, Ryan\n06-28-2014 12:34PM 0403 04 1346 4683\nTHANK YOU FOR SHOPPING AT\nTRADER JOE'S\nwww.traderjoes.com",
+    "resolved": [
+      {
+        "name": "Carrots",
+        "kind": "exact",
+        "source": "R-CARROTS SHREDDED 10 OZ"
+      },
+      {
+        "name": "Persian Cucumber",
+        "kind": "fuzzy",
+        "source": "R-CUCUMBERS PERSIAN 1 LB"
+      },
+      {
+        "name": "Tomatoes",
+        "kind": "exact",
+        "source": "TOMATOES CRUSHED NO SALT"
+      },
+      {
+        "name": "Basil",
+        "kind": "exact",
+        "source": "TOMATOES WHOLE NO SALT W/BASIL"
+      },
+      {
+        "name": "Oatmeal",
+        "kind": "exact",
+        "source": "ORGANIC OLD FASHIONED OATMEAL"
+      },
+      {
+        "name": "Mozzarella",
+        "kind": "exact",
+        "source": "PKG SHREDDED MOZZARELLA LITE T 3.99"
+      },
+      {
+        "name": "Eggs",
+        "kind": "exact",
+        "source": "EGGS 1 DOZ ORGANIC BROWN."
+      },
+      {
+        "name": "Chickpeas",
+        "kind": "exact",
+        "source": "BEANS GARBANZO"
+      },
+      {
+        "name": "Avocado",
+        "kind": "fuzzy",
+        "source": "A-AVOCADOS HASS BAG 4CT"
+      },
+      {
+        "name": "Apples",
+        "kind": "fuzzy",
+        "source": "A-APPLE BAG JAZZ 2 LB"
+      },
+      {
+        "name": "Pepper",
+        "kind": "exact",
+        "source": "A-PEPPER BELL EACH XL RED"
+      },
+      {
+        "name": "Banana",
+        "kind": "fuzzy",
+        "source": "BANANAS ORGANIC"
+      },
+      {
+        "name": "Peanut Butter",
+        "kind": "exact",
+        "source": "CREAMY SALTED PEANUT BUTTER"
+      },
+      {
+        "name": "Pita Bread",
+        "kind": "exact",
+        "source": "WHL WHT PITA BREAD"
+      }
+    ],
+    "unresolved": [
+      {
+        "raw": "2001 Greenville Ave",
+        "cleaned": "Greenville Ave",
+        "expanded": "greenville ave"
+      },
+      {
+        "raw": "Dallas TX 75206",
+        "cleaned": "Dallas Tx",
+        "expanded": "dallas tx"
+      },
+      {
+        "raw": "OPEN 8:00AM TO 9:00PM DAILY",
+        "cleaned": "Open 00Am To 00Pm Daily",
+        "expanded": "open 00am to 00pm daily"
+      },
+      {
+        "raw": "SPROUTED CA STYLE",
+        "cleaned": "Sprouted Ca Style",
+        "expanded": "sprouted ca style"
+      },
+      {
+        "raw": "GROCERY NON TAXABLE",
+        "cleaned": "Grocery",
+        "expanded": "grocery"
+      },
+      {
+        "raw": "3EA @ 0.29/EA",
+        "cleaned": "3Ea @ Ea",
+        "expanded": "3ea @ ea"
+      },
+      {
+        "raw": "GROCERY NON TAXABLE",
+        "cleaned": "Grocery",
+        "expanded": "grocery"
+      },
+      {
+        "raw": "ITEMS 22",
+        "cleaned": "Items",
+        "expanded": "items"
+      },
+      {
+        "raw": "Higgins, Ryan",
+        "cleaned": "Higgins, Ryan",
+        "expanded": "higgins, ryan"
+      },
+      {
+        "raw": "06-28-2014 12:34PM 0403 04 1346 4683",
+        "cleaned": "34Pm",
+        "expanded": "34pm"
+      },
+      {
+        "raw": "www.traderjoes.com",
+        "cleaned": "Www.Traderjoes.Com",
+        "expanded": "www.traderjoes.com"
+      }
+    ]
+  },
+  "10.jpg": {
+    "raw_text": "SPAR\nTel: 036-4481240\nesail bergspar@telkomsa.net\nVAT No: 4450102696\nNLA REG NO: KZN 032577\nR\nLAZENBY WORCESTER SAUCE 125ML\n17.99 A\nMILKY BAR CHOC\n80GR\n16.99 A\nSMOKED VIENNAS\n500GR\n33.99 A\nPEALED PEACHES\n400G\n82.99 A\nMEDITERRANEAN MIX\n1KG\n44.99 *\nSPAR COOKING OIL\n375ML\n14.99*\nF/L ENGLISH CUCUMB\n1'S\n12.99*\nNESTLE AERO\n85GR\n20.99 A\nCADBURY DAIRY MI\n80GR\n16.99 A\nGRAPES MIXED TUB\nTUB\n24.99 *\nTASTIC RICE\n500GR\n11.99 *\nBLACK CAT SMOOTH\n270GR\n27.99 A\nCARRIER BAG 24L\n1'S\n0.75 A\nBANANAS LOOSE\n17KG\n0.596kg @\n15.99 R\n/kg\n9.53*\nTOTAL FOR 14 ITEMS\n338.16\nTENDERED Nedbank\n338.16\n--- TAX INVOICE\nVAT rate\nexcl.\nTAX\nincl.\n0.00%\n119.48\n0.00\n119.48*\n15.00%\n190.16\n28.52\n218.68 A\nSLIP TILL CASHIER\nDATE/TIME\n3780 005\n101 23.02.21 16:17\nCASHIER NAME: SMAZI\nPlease Retain Slip\nThank You For Shopping With Us! :)\nFollow us on Facebook: Spar Bergville",
+    "resolved": [
+      {
+        "name": "Worcestershire Sauce",
+        "kind": "fuzzy",
+        "source": "LAZENBY WORCESTER SAUCE 125ML"
+      },
+      {
+        "name": "Milk",
+        "kind": "fuzzy",
+        "source": "MILKY BAR CHOC"
+      },
+      {
+        "name": "Peaches",
+        "kind": "exact",
+        "source": "PEALED PEACHES"
+      },
+      {
+        "name": "Cucumber",
+        "kind": "fuzzy",
+        "source": "F/L ENGLISH CUCUMB"
+      },
+      {
+        "name": "Rice",
+        "kind": "exact",
+        "source": "TASTIC RICE"
+      },
+      {
+        "name": "Banana",
+        "kind": "fuzzy",
+        "source": "BANANAS LOOSE"
+      }
+    ],
+    "unresolved": [
+      {
+        "raw": "Tel: 036-4481240",
+        "cleaned": "Tel",
+        "expanded": "tel"
+      },
+      {
+        "raw": "esail bergspar@telkomsa.net",
+        "cleaned": "Esail Bergspar@Telkomsa.Net",
+        "expanded": "esail bergspar@telkomsa.net"
+      },
+      {
+        "raw": "VAT No: 4450102696",
+        "cleaned": "Vat No",
+        "expanded": "vat no"
+      },
+      {
+        "raw": "NLA REG NO: KZN 032577",
+        "cleaned": "Nla Reg No Kzn",
+        "expanded": "nla reg no kzn"
+      },
+      {
+        "raw": "80GR",
+        "cleaned": "80Gr",
+        "expanded": "80gr"
+      },
+      {
+        "raw": "SMOKED VIENNAS",
+        "cleaned": "Smoked Viennas",
+        "expanded": "smoked viennas"
+      },
+      {
+        "raw": "500GR",
+        "cleaned": "500Gr",
+        "expanded": "500gr"
+      },
+      {
+        "raw": "MEDITERRANEAN MIX",
+        "cleaned": "Mediterranean Mix",
+        "expanded": "mediterranean mix"
+      },
+      {
+        "raw": "NESTLE AERO",
+        "cleaned": "Nestle Aero",
+        "expanded": "nestle aero"
+      },
+      {
+        "raw": "85GR",
+        "cleaned": "85Gr",
+        "expanded": "85gr"
+      },
+      {
+        "raw": "CADBURY DAIRY MI",
+        "cleaned": "Cadbury Dairy Mi",
+        "expanded": "cadbury dairy mi"
+      },
+      {
+        "raw": "80GR",
+        "cleaned": "80Gr",
+        "expanded": "80gr"
+      },
+      {
+        "raw": "GRAPES MIXED TUB",
+        "cleaned": "Grapes Mixed Tub",
+        "expanded": "grapes mixed tub"
+      },
+      {
+        "raw": "TUB",
+        "cleaned": "Tub",
+        "expanded": "tub"
+      },
+      {
+        "raw": "500GR",
+        "cleaned": "500Gr",
+        "expanded": "500gr"
+      },
+      {
+        "raw": "BLACK CAT SMOOTH",
+        "cleaned": "Black Cat Smooth",
+        "expanded": "black cat smooth"
+      },
+      {
+        "raw": "270GR",
+        "cleaned": "270Gr",
+        "expanded": "270gr"
+      },
+      {
+        "raw": "CARRIER BAG 24L",
+        "cleaned": "Carrier Bag",
+        "expanded": "carrier bag"
+      },
+      {
+        "raw": "TENDERED Nedbank",
+        "cleaned": "Tendered Nedbank",
+        "expanded": "tendered nedbank"
+      },
+      {
+        "raw": "VAT rate",
+        "cleaned": "Vat Rate",
+        "expanded": "vat rate"
+      },
+      {
+        "raw": "excl.",
+        "cleaned": "Excl",
+        "expanded": "excl"
+      },
+      {
+        "raw": "incl.",
+        "cleaned": "Incl",
+        "expanded": "incl"
+      },
+      {
+        "raw": "DATE/TIME",
+        "cleaned": "Date Time",
+        "expanded": "date time"
+      },
+      {
+        "raw": "Please Retain Slip",
+        "cleaned": "Please Retain Slip",
+        "expanded": "please retain slip"
+      }
+    ]
+  },
+  "11.jpg": {
+    "raw_text": "WHOLE\nFOODS\nMARKET\nSHARON RD.\nPL TORTILLA S\n6.99 B\nCAGE FREE ALL WHIT\nBLACK BEANS\n3.69 B\n1.29 B\nFrozen Mangoes 160\n2.99 B\nWhole Strawberries\n2.99 B\nOG LF COTTAGE CHEE\n3.49 B\n*\n*VC\n*\nMAHI MAHI FILLETS\n$2 off (1) WC Fill\nCalifornia Harvest\n8.99 B\n2.00-\n2.69 B\n1.08 lb @ 1.99 /lb\n*WT\nTARE = .01\nPLUMS BLACK CV 2.15 B\nITEM = 4040\nNHP SLICED OVEN RO\n3.99 B\nNHP SLICED HICKORY\n3.99 B\n1.64 lb @ 1.99 /lb\nTARE\n= .01\nWT\nGALA APPLES OG\n3.26 B\nITEM\n= 94135\n**** TAX .93 BAL\n45.44",
+    "resolved": [
+      {
+        "name": "Tortillas",
+        "kind": "fuzzy",
+        "source": "PL TORTILLA S"
+      },
+      {
+        "name": "Black Beans",
+        "kind": "exact",
+        "source": "BLACK BEANS"
+      },
+      {
+        "name": "Strawberries",
+        "kind": "exact",
+        "source": "Whole Strawberries"
+      },
+      {
+        "name": "Apples",
+        "kind": "exact",
+        "source": "GALA APPLES OG"
+      }
+    ],
+    "unresolved": [
+      {
+        "raw": "WHOLE",
+        "cleaned": "Whole",
+        "expanded": "whole"
+      },
+      {
+        "raw": "FOODS",
+        "cleaned": "Foods",
+        "expanded": "foods"
+      },
+      {
+        "raw": "MARKET",
+        "cleaned": "Market",
+        "expanded": "market"
+      },
+      {
+        "raw": "SHARON RD.",
+        "cleaned": "Sharon Rd",
+        "expanded": "sharon red"
+      },
+      {
+        "raw": "CAGE FREE ALL WHIT",
+        "cleaned": "Cage Whit",
+        "expanded": "cage whit"
+      },
+      {
+        "raw": "Frozen Mangoes 160",
+        "cleaned": "Frozen Mangoes",
+        "expanded": "frozen mangoes"
+      },
+      {
+        "raw": "OG LF COTTAGE CHEE",
+        "cleaned": "Og Lf Cottage Chee",
+        "expanded": "og lf cottage chee"
+      },
+      {
+        "raw": "MAHI MAHI FILLETS",
+        "cleaned": "Mahi Mahi Fillets",
+        "expanded": "mahi mahi fillets"
+      },
+      {
+        "raw": "$2 off (1) WC Fill",
+        "cleaned": "Off ( ) Wc Fill",
+        "expanded": "off ( ) wc fill"
+      },
+      {
+        "raw": "California Harvest",
+        "cleaned": "California Harvest",
+        "expanded": "california harvest"
+      },
+      {
+        "raw": "1.08 lb @ 1.99 /lb",
+        "cleaned": "@ Lb",
+        "expanded": "@ lb"
+      },
+      {
+        "raw": "TARE = .01",
+        "cleaned": "Tare =",
+        "expanded": "tare ="
+      },
+      {
+        "raw": "PLUMS BLACK CV 2.15 B",
+        "cleaned": "Plums Black Cv",
+        "expanded": "plums black cv"
+      },
+      {
+        "raw": "ITEM = 4040",
+        "cleaned": "Item =",
+        "expanded": "item ="
+      },
+      {
+        "raw": "NHP SLICED OVEN RO",
+        "cleaned": "Nhp Sliced Oven Ro",
+        "expanded": "nhp sliced oven ro"
+      },
+      {
+        "raw": "NHP SLICED HICKORY",
+        "cleaned": "Nhp Sliced Hickory",
+        "expanded": "nhp sliced hickory"
+      },
+      {
+        "raw": "1.64 lb @ 1.99 /lb",
+        "cleaned": "@ Lb",
+        "expanded": "@ lb"
+      },
+      {
+        "raw": "TARE",
+        "cleaned": "Tare",
+        "expanded": "tare"
+      },
+      {
+        "raw": "ITEM",
+        "cleaned": "Item",
+        "expanded": "item"
+      }
+    ]
+  },
+  "12.jpg": {
+    "raw_text": "WAL+MART\nSave money. Live better.\nWE SELL FOR LESS\nALWAYS\nMANAGER DAPHNE SESSION\n(636) 536 - 4601\nST# 2600STEMMELDED3005\nSW FIGURES 065356920144\nTE# 17 TR# 03359\n6.63 X\nTOOTHBRUSH\n003500055500\n0.96 X\nSUBTOTAL\n7.59\nWOMEN SLIPPE 009725614790\n9.86 X\nSUBTOTAL\n17.45\nTAX 1 3.100 %\nTAX 3\n0.54\n4.350 %\n0.76\nTOTAL\n18.75\nMCARD TEND\n18.75\nAPPROVAL #007190\nACCOUNT #3546\nTRANS ID -\nVALIDATION\nPAYMENT SERVICE - A\nCHANGE DUE\n# ITEMS SOLD 3\nTC# 9489 7094 6487 3073 3651\n0.00\nWal-Mart exclusive Eagles CD\navailable October 30th!\n10/20/07\n13:48:43\n***CUSTOMER COPY***",
+    "resolved": [],
+    "unresolved": [
+      {
+        "raw": "WAL+MART",
+        "cleaned": "Wal+Mart",
+        "expanded": "wal+mart"
+      },
+      {
+        "raw": "WE SELL FOR LESS",
+        "cleaned": "We Sell For Less",
+        "expanded": "we sell for less"
+      },
+      {
+        "raw": "ALWAYS",
+        "cleaned": "Always",
+        "expanded": "always"
+      },
+      {
+        "raw": "ST# 2600STEMMELDED3005",
+        "cleaned": "St 2600Stemmelded3005",
+        "expanded": "st 2600stemmelded3005"
+      },
+      {
+        "raw": "SW FIGURES 065356920144",
+        "cleaned": "Sw Figures",
+        "expanded": "sweet figures"
+      },
+      {
+        "raw": "TE# 17 TR# 03359",
+        "cleaned": "Te Tr",
+        "expanded": "te tr"
+      },
+      {
+        "raw": "TOOTHBRUSH",
+        "cleaned": "Toothbrush",
+        "expanded": "toothbrush"
+      },
+      {
+        "raw": "WOMEN SLIPPE 009725614790",
+        "cleaned": "Women Slippe",
+        "expanded": "women slippe"
+      },
+      {
+        "raw": "TRANS ID -",
+        "cleaned": "Trans Id",
+        "expanded": "trans id"
+      },
+      {
+        "raw": "VALIDATION",
+        "cleaned": "Validation",
+        "expanded": "validation"
+      },
+      {
+        "raw": "PAYMENT SERVICE - A",
+        "cleaned": "Payment Service",
+        "expanded": "payment service"
+      },
+      {
+        "raw": "Wal-Mart exclusive Eagles CD",
+        "cleaned": "Wal-Mart Exclusive Eagles Cd",
+        "expanded": "wal-mart exclusive eagles cd"
+      },
+      {
+        "raw": "available October 30th!",
+        "cleaned": "Available October 30Th!",
+        "expanded": "available october 30th!"
+      },
+      {
+        "raw": "***CUSTOMER COPY***",
+        "cleaned": "Customer Copy",
+        "expanded": "customer copy"
+      }
+    ]
+  },
+  "13.jpg": {
+    "raw_text": "ID #: 71.1SWOYBKCW\nWalmart\nSave money. Live better.\n*\n(843) 292 - 0362\nMANAGER MICHAEL REIGHARD\n2014 S IRBY ST\nFLORENCE SC 29505\nSI# 02703 OP# 009049 TE 49 TR# 07142\nGIFT CARD 087458604383\n50.00 0\nSUBTOTAL\n50.00\nTOTAL\n50.00\nCASH TEND\n60.00\nCHANGE DUE\n10.00\n50.00\nSHOP.CARD ACTIVATION\nACCOUNT 613968546249/292\nAPPR. CODE 192986\nREF #0083742\nBeg Bal\nTran Amt\nEnd Bal\n0.00\n50.00\n50.00\n03/11/17\n19:19:31\nTC# 9736 5895 9237 2333 1932\nLow Prices You Can Trust. Every Day.\n08/11/17 19:22:40\nStore receipts on your phone. Walmart P\nay.",
+    "resolved": [],
+    "unresolved": [
+      {
+        "raw": "ID #: 71.1SWOYBKCW",
+        "cleaned": "Id .1Swoybkcw",
+        "expanded": "id .1swoybkcw"
+      },
+      {
+        "raw": "2014 S IRBY ST",
+        "cleaned": "S Irby St",
+        "expanded": "s irby st"
+      },
+      {
+        "raw": "FLORENCE SC 29505",
+        "cleaned": "Florence Sc",
+        "expanded": "florence sc"
+      },
+      {
+        "raw": "SI# 02703 OP# 009049 TE 49 TR# 07142",
+        "cleaned": "Si Op Te Tr",
+        "expanded": "si op te tr"
+      },
+      {
+        "raw": "GIFT CARD 087458604383",
+        "cleaned": "Gift Card",
+        "expanded": "gift card"
+      },
+      {
+        "raw": "SHOP.CARD ACTIVATION",
+        "cleaned": "Shop.Card Activation",
+        "expanded": "shop.card activation"
+      },
+      {
+        "raw": "Beg Bal",
+        "cleaned": "Beg Bal",
+        "expanded": "beg bal"
+      },
+      {
+        "raw": "Tran Amt",
+        "cleaned": "Tran Amt",
+        "expanded": "tran amt"
+      },
+      {
+        "raw": "End Bal",
+        "cleaned": "End Bal",
+        "expanded": "end bal"
+      }
+    ]
+  },
+  "14.jpg": {
+    "raw_text": "See back of receipt for your chance\nto win $1000\nID #: 7LORX4K8PJX\nXHAHT\nWalmart **\nSave money. Live better.\n( 937 ) 644 - 2800\nMANAGER CHRISTOPHER WOOD\n555 COLEMANS CROSSING BLVD\nMARYSVILLE OH 43040\nonspla\nST# 01595 OP# 007573 TE# 10 TR# 08890\nEQUATE LINER 068113186503\nVFUS ENG POM 005100024543 F\nDAWN ORIG 003700011045\n50YD PKGTAPE 007535307841\n50YD PKGTAPE 007535307841\n3.88 X\n7.48 N\n5.97 X\n1.12 X\nwww\n1.12 X\n5.78 X\n25.35\nTAX 1 7.000 %\n1.25\nTOTAL\n26.60 10\n26.60\n0.00\nLINT ROLLER2 005114123488\nSUBTOTAL\nDEBIT TEND\nCHANGE DUE\nPAY FROM PRIMARY\n26.60 TOTAL PURCHASE\nEFT DEBIT\nACCOUNT #\n**** **** **** 8371 S\nREF # 712400283994\nNETWORK ID. 0069 APPR CODE 868483\nTERMINAL # SC010087\n05/04/17\n19:54:16\n# ITEMS SOLD 6\nflig\nTC# 7535 0523 2384 1061 368 conspi\n05/04/17 19:54:18\nStore receipts on your phone. Walmart P\nay.",
+    "resolved": [],
+    "unresolved": [
+      {
+        "raw": "to win $1000",
+        "cleaned": "To Win",
+        "expanded": "to win"
+      },
+      {
+        "raw": "ID #: 7LORX4K8PJX",
+        "cleaned": "Id 7Lorx4K8Pjx",
+        "expanded": "id 7lorx4k8pjx"
+      },
+      {
+        "raw": "XHAHT",
+        "cleaned": "Xhaht",
+        "expanded": "xhaht"
+      },
+      {
+        "raw": "555 COLEMANS CROSSING BLVD",
+        "cleaned": "Colemans Crossing Blvd",
+        "expanded": "colemans crossing blvd"
+      },
+      {
+        "raw": "MARYSVILLE OH 43040",
+        "cleaned": "Marysville Oh",
+        "expanded": "marysville oh"
+      },
+      {
+        "raw": "onspla",
+        "cleaned": "Onspla",
+        "expanded": "onspla"
+      },
+      {
+        "raw": "EQUATE LINER 068113186503",
+        "cleaned": "Equate Liner",
+        "expanded": "equate liner"
+      },
+      {
+        "raw": "VFUS ENG POM 005100024543 F",
+        "cleaned": "Vfus Eng Pom",
+        "expanded": "vfus eng pom"
+      },
+      {
+        "raw": "DAWN ORIG 003700011045",
+        "cleaned": "Dawn Orig",
+        "expanded": "dawn orig"
+      },
+      {
+        "raw": "50YD PKGTAPE 007535307841",
+        "cleaned": "50Yd Pkgtape",
+        "expanded": "50yd pkgtape"
+      },
+      {
+        "raw": "50YD PKGTAPE 007535307841",
+        "cleaned": "50Yd Pkgtape",
+        "expanded": "50yd pkgtape"
+      },
+      {
+        "raw": "www",
+        "cleaned": "Www",
+        "expanded": "www"
+      },
+      {
+        "raw": "LINT ROLLER2 005114123488",
+        "cleaned": "Lint Roller2",
+        "expanded": "lint roller2"
+      },
+      {
+        "raw": "PAY FROM PRIMARY",
+        "cleaned": "Pay From Primary",
+        "expanded": "pay from primary"
+      },
+      {
+        "raw": "flig",
+        "cleaned": "Flig",
+        "expanded": "flig"
+      },
+      {
+        "raw": "TC# 7535 0523 2384 1061 368 conspi",
+        "cleaned": "Tc Conspi",
+        "expanded": "tc conspi"
+      }
+    ]
+  },
+  "15.jpg": {
+    "raw_text": "to win $1000\nHoy asw woh\nSee back of receipt for your chances au\nID #:\n7JYY2JWOK3Y\nlew 00012\nabino fig\nWalmart\nSave money. Live better.\nOnagio\nashboa\nhemisw\ntsWeb\n(714) 799-0020 o\nMANAGER YVONNE THOMAS\n13331 BEACH BLVD\nWESTMINSTER CA 92683\nST# 02495 OP# 006969 TE# 79 TR#\nDIABETES\n068113131172H\nTobin ispal\nayug duorfiw\n01526www\n12.58 N\nSUBTOTAL\n12.58\nqnawe\nTOTAL\n12.58\nVISA TEND\n12.58 sibito\nPAYMENT SERVICE - E\nAID A0000000031010\nTC 9E0FAC9A809E5D92\nTERMINAL #281767447\n*NO SIGNATURE REQUIRED\n07/22/16\nAPPROVAL #222235\nREF # 620500604401\nTRANS ID 586205139884060\nVALIDATION-76LK\nVisa Credit **** **** **** 3670 I 1\nysbal to\nUOY HAHT\nyesw wob\n20:53:11\nCHANGE DUE\n# ITEMS SOLD 1\nTC# 7503 0129 1089 7649 4115\nods zu list\n00012\nabies hin\n0.0000\nseb\nLow Prices You Can Trust. Every Day, gal\n07/22/16 20:53:11 siquors\n***CUSTOMER COPY***\nSavings Catcher! Scan with Walmart app\nenedw bloV ysbos to\nUOY XMAHT\nSeonehequoy anw woH",
+    "resolved": [],
+    "unresolved": [
+      {
+        "raw": "to win $1000",
+        "cleaned": "To Win",
+        "expanded": "to win"
+      },
+      {
+        "raw": "Hoy asw woh",
+        "cleaned": "Hoy Asw Woh",
+        "expanded": "hoy asw woh"
+      },
+      {
+        "raw": "7JYY2JWOK3Y",
+        "cleaned": "7Jyy2Jwok3Y",
+        "expanded": "7jyy2jwok3y"
+      },
+      {
+        "raw": "lew 00012",
+        "cleaned": "Lew",
+        "expanded": "lew"
+      },
+      {
+        "raw": "abino fig",
+        "cleaned": "Abino Fig",
+        "expanded": "abino fig"
+      },
+      {
+        "raw": "Onagio",
+        "cleaned": "Onagio",
+        "expanded": "onagio"
+      },
+      {
+        "raw": "ashboa",
+        "cleaned": "Ashboa",
+        "expanded": "ashboa"
+      },
+      {
+        "raw": "hemisw",
+        "cleaned": "Hemisw",
+        "expanded": "hemisw"
+      },
+      {
+        "raw": "tsWeb",
+        "cleaned": "Tsweb",
+        "expanded": "tsweb"
+      },
+      {
+        "raw": "(714) 799-0020 o",
+        "cleaned": "( ) - O",
+        "expanded": "( ) - o"
+      },
+      {
+        "raw": "13331 BEACH BLVD",
+        "cleaned": "Beach Blvd",
+        "expanded": "beach blvd"
+      },
+      {
+        "raw": "WESTMINSTER CA 92683",
+        "cleaned": "Westminster Ca",
+        "expanded": "westminster ca"
+      },
+      {
+        "raw": "DIABETES",
+        "cleaned": "Diabetes",
+        "expanded": "diabetes"
+      },
+      {
+        "raw": "068113131172H",
+        "cleaned": "068113131172H",
+        "expanded": "068113131172h"
+      },
+      {
+        "raw": "Tobin ispal",
+        "cleaned": "Tobin Ispal",
+        "expanded": "tobin ispal"
+      },
+      {
+        "raw": "ayug duorfiw",
+        "cleaned": "Ayug Duorfiw",
+        "expanded": "ayug duorfiw"
+      },
+      {
+        "raw": "01526www",
+        "cleaned": "01526Www",
+        "expanded": "01526www"
+      },
+      {
+        "raw": "qnawe",
+        "cleaned": "Qnawe",
+        "expanded": "qnawe"
+      },
+      {
+        "raw": "12.58 sibito",
+        "cleaned": "Sibito",
+        "expanded": "sibito"
+      },
+      {
+        "raw": "PAYMENT SERVICE - E",
+        "cleaned": "Payment Service",
+        "expanded": "payment service"
+      },
+      {
+        "raw": "AID A0000000031010",
+        "cleaned": "Aid A0000000031010",
+        "expanded": "aid a0000000031010"
+      },
+      {
+        "raw": "TC 9E0FAC9A809E5D92",
+        "cleaned": "Tc 9E0Fac9A809E5D92",
+        "expanded": "tc 9e0fac9a809e5d92"
+      },
+      {
+        "raw": "*NO SIGNATURE REQUIRED",
+        "cleaned": "Required",
+        "expanded": "required"
+      },
+      {
+        "raw": "TRANS ID 586205139884060",
+        "cleaned": "Trans Id",
+        "expanded": "trans id"
+      },
+      {
+        "raw": "VALIDATION-76LK",
+        "cleaned": "Validation-76Lk",
+        "expanded": "validation-76lk"
+      },
+      {
+        "raw": "ysbal to",
+        "cleaned": "Ysbal To",
+        "expanded": "ysbal to"
+      },
+      {
+        "raw": "UOY HAHT",
+        "cleaned": "Uoy Haht",
+        "expanded": "uoy haht"
+      },
+      {
+        "raw": "yesw wob",
+        "cleaned": "Yesw Wob",
+        "expanded": "yesw wob"
+      },
+      {
+        "raw": "ods zu list",
+        "cleaned": "Ods Zu List",
+        "expanded": "ods zu list"
+      },
+      {
+        "raw": "abies hin",
+        "cleaned": "Abies Hin",
+        "expanded": "abies hin"
+      },
+      {
+        "raw": "seb",
+        "cleaned": "Seb",
+        "expanded": "seb"
+      },
+      {
+        "raw": "07/22/16 20:53:11 siquors",
+        "cleaned": "Siquors",
+        "expanded": "siquors"
+      },
+      {
+        "raw": "***CUSTOMER COPY***",
+        "cleaned": "Customer Copy",
+        "expanded": "customer copy"
+      },
+      {
+        "raw": "enedw bloV ysbos to",
+        "cleaned": "Enedw Blov Ysbos To",
+        "expanded": "enedw blov ysbos to"
+      },
+      {
+        "raw": "UOY XMAHT",
+        "cleaned": "Uoy Xmaht",
+        "expanded": "uoy xmaht"
+      },
+      {
+        "raw": "Seonehequoy anw woH",
+        "cleaned": "Seonehequoy Anw Woh",
+        "expanded": "seonehequoy anw woh"
+      }
+    ]
+  },
+  "16.jpg": {
+    "raw_text": "See back of receipt for your chance\nto win $1000\nID #: 7L2T9WJM25F\nWalmart\nSave money. Live better.\n(701) 223 - 3066\nMANAGER TIM MORRIS\n2717 ROCK ISLAND PL\nBISMARCK ND 58504\nST# 01534 OP# 009048 TE# 48 TR#\n04455\n6 WING PLATE 020108870398\n3.98 P\nASST 27 063099656595\n4.88 X\nCUTIE CAR\n063099656644\n12.88 X\nSUBTOTAL\n21.74\nTAX 1\n6.500 %\n1.15\nTAX 4\n7.500 %\n0.30\nTOTAL\n23.19\nDEBIT TEND\n23.19\nCHANGE DUE\n0.00\nEFT DEBIT\n23.19\nUS DEBIT\nPAY FROM PRIMARY\nTOTAL PURCHASE\n**** **** **** 2696 I O\nREF # 731700494718\nNETWORK ID. 0081 APPR CODE 936886\nUS DEBIT\nAID A0000000980840\nTC 58877239DA5B3B44\n*NO SIGNATURE REQUIRED\nTERMINAL # SC011090\n11/13/17\n12:34:04\n# ITEMS SOLD 3\nTC# 2188 7274 6444 1567 3762\nLow Prices You Can Trust. Every Day.\n11/13/17 12:34:11\nStore receipts on your phone. Walmart P\nay.",
+    "resolved": [],
+    "unresolved": [
+      {
+        "raw": "to win $1000",
+        "cleaned": "To Win",
+        "expanded": "to win"
+      },
+      {
+        "raw": "ID #: 7L2T9WJM25F",
+        "cleaned": "Id 7L2T9Wjm25F",
+        "expanded": "id 7l2t9wjm25f"
+      },
+      {
+        "raw": "2717 ROCK ISLAND PL",
+        "cleaned": "Rock Island Pl",
+        "expanded": "rock island pl"
+      },
+      {
+        "raw": "BISMARCK ND 58504",
+        "cleaned": "Bismarck Nd",
+        "expanded": "bismarck nd"
+      },
+      {
+        "raw": "6 WING PLATE 020108870398",
+        "cleaned": "Wing Plate",
+        "expanded": "wing plate"
+      },
+      {
+        "raw": "ASST 27 063099656595",
+        "cleaned": "Asst",
+        "expanded": "asst"
+      },
+      {
+        "raw": "CUTIE CAR",
+        "cleaned": "Cutie Car",
+        "expanded": "cutie car"
+      },
+      {
+        "raw": "PAY FROM PRIMARY",
+        "cleaned": "Pay From Primary",
+        "expanded": "pay from primary"
+      },
+      {
+        "raw": "AID A0000000980840",
+        "cleaned": "Aid A0000000980840",
+        "expanded": "aid a0000000980840"
+      },
+      {
+        "raw": "TC 58877239DA5B3B44",
+        "cleaned": "Tc 58877239Da5B3B44",
+        "expanded": "tc 58877239da5b3b44"
+      },
+      {
+        "raw": "*NO SIGNATURE REQUIRED",
+        "cleaned": "Required",
+        "expanded": "required"
+      }
+    ]
+  },
+  "17.jpg": {
+    "raw_text": "See back of receipt for your chance\nto win $1000\nID #: 7KZGF1SL2FF\nWalmart\nSave money. Live better.\n(970) 259- 8755\nMANAGER MIKE NEIDLINGER\n1155 S CAMINO DEL RIO\nDURANGO CO 81303\nST# 02270 OP# 000144 TE# 02 TR# 03080\nBANANAS\nBEVERAGE\nHOM\n000000004011KI\n1.75 lb\n@ 1 lb /0.54\n0.95 R\n003120002133 F2.00 R\nOS CRAN POM\n003120027015 F\n2.00 R\nSTRWBRY CC\n076471782200 F\n0.96 Y\nCAMPARI TOM\n073447501213 I\n2.98 R\nKFT SINGLES\n002100061526 F\n3.78 Y\nbe 44500982114 004450098211 F\n3.98 Y\nHARD SALAMI\n020533960343 F\n3.43 Y\nAVOCADO\n000000004046KI\n4 AT 1 FOR 0.44\n1.76 R\nTAX 1\nsin TAX 2\nPILLS WHITE\nSH NYLON COL 007417024836\nHAND CLEANER 004125100005\nINJECTR CLNR 004980710003\n}\nTAX 5 2.900 % 38.68\nTOTAL\nCASH TEND\nCHANGE DUE\n40.68\n2.00\nshni benito # ITEMS SOLD 16\n1600\nTC# 3041 7466 0669 7952 272\n068113113619 F\n1.00 Y\n2.97 X\n1.67 X\n8.87 X\nSUBTOTAL\n36.35\n7.900 %\n1.07\n5.000 %\n1.14\n0.12\n01/15/17 14:26:03 UG Y MAHT",
+    "resolved": [
+      {
+        "name": "Banana",
+        "kind": "fuzzy",
+        "source": "BANANAS"
+      },
+      {
+        "name": "Tomato",
+        "kind": "exact",
+        "source": "CAMPARI TOM"
+      },
+      {
+        "name": "Avocado",
+        "kind": "exact",
+        "source": "AVOCADO"
+      }
+    ],
+    "unresolved": [
+      {
+        "raw": "to win $1000",
+        "cleaned": "To Win",
+        "expanded": "to win"
+      },
+      {
+        "raw": "ID #: 7KZGF1SL2FF",
+        "cleaned": "Id 7Kzgf1Sl2Ff",
+        "expanded": "id 7kzgf1sl2ff"
+      },
+      {
+        "raw": "1155 S CAMINO DEL RIO",
+        "cleaned": "S Camino Del Rio",
+        "expanded": "s camino del rio"
+      },
+      {
+        "raw": "DURANGO CO 81303",
+        "cleaned": "Durango Co",
+        "expanded": "durango co"
+      },
+      {
+        "raw": "BEVERAGE",
+        "cleaned": "Beverage",
+        "expanded": "beverage"
+      },
+      {
+        "raw": "HOM",
+        "cleaned": "Hom",
+        "expanded": "hom"
+      },
+      {
+        "raw": "000000004011KI",
+        "cleaned": "000000004011Ki",
+        "expanded": "000000004011ki"
+      },
+      {
+        "raw": "OS CRAN POM",
+        "cleaned": "Os Cran Pom",
+        "expanded": "os cran pom"
+      },
+      {
+        "raw": "STRWBRY CC",
+        "cleaned": "Strwbry Cc",
+        "expanded": "strwbry cc"
+      },
+      {
+        "raw": "KFT SINGLES",
+        "cleaned": "Kft Singles",
+        "expanded": "kft singles"
+      },
+      {
+        "raw": "HARD SALAMI",
+        "cleaned": "Hard Salami",
+        "expanded": "hard salami"
+      },
+      {
+        "raw": "000000004046KI",
+        "cleaned": "000000004046Ki",
+        "expanded": "000000004046ki"
+      },
+      {
+        "raw": "4 AT 1 FOR 0.44",
+        "cleaned": "At For",
+        "expanded": "at for"
+      },
+      {
+        "raw": "PILLS WHITE",
+        "cleaned": "Pills White",
+        "expanded": "pills white"
+      },
+      {
+        "raw": "SH NYLON COL 007417024836",
+        "cleaned": "Sh Nylon Col",
+        "expanded": "sh nylon col"
+      },
+      {
+        "raw": "HAND CLEANER 004125100005",
+        "cleaned": "Hand Cleaner",
+        "expanded": "hand cleaner"
+      },
+      {
+        "raw": "INJECTR CLNR 004980710003",
+        "cleaned": "Injectr Clnr",
+        "expanded": "injectr clnr"
+      },
+      {
+        "raw": "01/15/17 14:26:03 UG Y MAHT",
+        "cleaned": "Ug Y Maht",
+        "expanded": "ug y maht"
+      }
+    ]
+  },
+  "18.jpg": {
+    "raw_text": "Give us feedback survey.walmart.com\nThank you! ID #: 70D137157NX5\nWalmart\n863-318-0752 Mgr:MARK\n7450 CYPRESS GARDENS BLVD\nWINTER HAVEN FL 33884\nST# 03347 OP# 009036 TE# 36 TR#\n05386\nGV WATER 007874235191 F\n0.98 N\nGV WATER\n007874235191 F\n0.98 N\nGREAT VALUE\n007874206203 F\nGREAT VALUE\n2.84 N\n007874206203 F\n2.84 N\nGAIN LFE\n003700077007\n6.97 X\nGAIN\n00003700076954\n4.94 X\nGV VEG OIL\n007874221000 F\n7.82 N\nSNICKER FS\nMIXED CHOC\nGDBR FS 6PK 003400029305 F 4.76 X\nCHERRIES 004326880002 F 1.78 X\nGAIN\n003700082365\nHY RSTLEG PM 035497333521H\nBATTERIES 001280051783\nGV 2OZ MINI 007874219999\n1.97 X\n9.97 N\n10.97 X\n004000050533 F\n3.78 X\n004000047587 F\n13.24 X\n2.97 X\nCRNBRY SAUCE 003120001605 F\n1.58 0\nSPREADS\n002740026499 F\n3.46 0\nEGGS 6CTOT\n007874212709 F\n0.90 0\nSUBTOTAL\n82.75\nTAX 1 7.000 %\n3.60\nbetau y yor\nBALTOTAL\n86.350\nDEBIT TEND\n86.35\nCHANGE DUE\n0.00\nEFT DEBIT\nPAY FROM PRIMARY\n86.35 TOTAL PURCHASE\nFIFTHTHIRD DEBIT ** **** **** 9832 I 0\nREF # 130400725877\nNETWORK ID. 0076 APPR CODE 001740\nUS Debito\nAID A0000000042203\nAAC A8FABF3D0FD07485\nTERMINAL # SC011151\n10/31/21 10:08:22\n# ITEMS SOLD 18\nTC# 7563 1623 3938 0953 7373 an\nLow Prices You Can Trust. Every Day.\n10/31/21 10:08:26\nper",
+    "resolved": [
+      {
+        "name": "Water",
+        "kind": "exact",
+        "source": "GV WATER 007874235191 F"
+      },
+      {
+        "name": "Vegetable Oil",
+        "kind": "fuzzy",
+        "source": "GV VEG OIL"
+      },
+      {
+        "name": "Eggs",
+        "kind": "exact",
+        "source": "EGGS 6CTOT"
+      }
+    ],
+    "unresolved": [
+      {
+        "raw": "7450 CYPRESS GARDENS BLVD",
+        "cleaned": "Cypress Gardens Blvd",
+        "expanded": "cypress gardens blvd"
+      },
+      {
+        "raw": "WINTER HAVEN FL 33884",
+        "cleaned": "Winter Haven Fl",
+        "expanded": "winter haven fl"
+      },
+      {
+        "raw": "GREAT VALUE",
+        "cleaned": "Great Value",
+        "expanded": "great value"
+      },
+      {
+        "raw": "GREAT VALUE",
+        "cleaned": "Great Value",
+        "expanded": "great value"
+      },
+      {
+        "raw": "GAIN LFE",
+        "cleaned": "Gain Lfe",
+        "expanded": "gain lfe"
+      },
+      {
+        "raw": "GAIN",
+        "cleaned": "Gain",
+        "expanded": "gain"
+      },
+      {
+        "raw": "SNICKER FS",
+        "cleaned": "Snicker Fs",
+        "expanded": "snicker fs"
+      },
+      {
+        "raw": "MIXED CHOC",
+        "cleaned": "Mixed Choc",
+        "expanded": "mixed chocolate"
+      },
+      {
+        "raw": "GDBR FS 6PK 003400029305 F 4.76 X",
+        "cleaned": "Gdbr Fs",
+        "expanded": "gdbr fs"
+      },
+      {
+        "raw": "CHERRIES 004326880002 F 1.78 X",
+        "cleaned": "Cherries",
+        "expanded": "cherries"
+      },
+      {
+        "raw": "GAIN",
+        "cleaned": "Gain",
+        "expanded": "gain"
+      },
+      {
+        "raw": "HY RSTLEG PM 035497333521H",
+        "cleaned": "Hy Rstleg Pm 035497333521H",
+        "expanded": "hy rstleg pm 035497333521h"
+      },
+      {
+        "raw": "BATTERIES 001280051783",
+        "cleaned": "Batteries",
+        "expanded": "batteries"
+      },
+      {
+        "raw": "GV 2OZ MINI 007874219999",
+        "cleaned": "Gv Mini",
+        "expanded": "gv mini"
+      },
+      {
+        "raw": "CRNBRY SAUCE 003120001605 F",
+        "cleaned": "Crnbry Sauce",
+        "expanded": "crnbry sauce"
+      },
+      {
+        "raw": "SPREADS",
+        "cleaned": "Spreads",
+        "expanded": "spreads"
+      },
+      {
+        "raw": "betau y yor",
+        "cleaned": "Betau Y Yor",
+        "expanded": "betau y yor"
+      },
+      {
+        "raw": "BALTOTAL",
+        "cleaned": "Baltotal",
+        "expanded": "baltotal"
+      },
+      {
+        "raw": "PAY FROM PRIMARY",
+        "cleaned": "Pay From Primary",
+        "expanded": "pay from primary"
+      },
+      {
+        "raw": "US Debito",
+        "cleaned": "Us Debito",
+        "expanded": "us debito"
+      },
+      {
+        "raw": "AID A0000000042203",
+        "cleaned": "Aid A0000000042203",
+        "expanded": "aid a0000000042203"
+      },
+      {
+        "raw": "AAC A8FABF3D0FD07485",
+        "cleaned": "Aac A8Fabf3D0Fd07485",
+        "expanded": "aac a8fabf3d0fd07485"
+      },
+      {
+        "raw": "TC# 7563 1623 3938 0953 7373 an",
+        "cleaned": "Tc An",
+        "expanded": "tc an"
+      },
+      {
+        "raw": "per",
+        "cleaned": "Per",
+        "expanded": "per"
+      }
+    ]
+  },
+  "19.jpg": {
+    "raw_text": "bulidi www.bloves to\nGive us feedback survey.walmart.com\nThank you! ID #:7QDRJJ99F3X MAHT\nWalmartway 28th worl\n2 to 7 m 863-676-9425 MOURIEL Juoda Hot\n2000 STATE ROAD 60 E\nsmisW 00012\nhemicW LAKE WALES FL 33898\nST# 00859 OP# 009026 TE# 26 TR# 02422\nGRILL COVER 471288396027\nFIBER CHOICE 036926600094 b\nCELERY HEART 003338365301 F2.48 N\nRED GRAPE 000000004023KF\n2.51 lb 1 lb /1.44\n14.97 X\n12.94 NG\n3.61 N\nSUBTOTAL\n34.00\nTAX 1 7.000 %\n1.05\nTOTAL\n35.05\nSHOPPING CARD TEND\n35.05\nsons 19010\nCHANGE DUE\n0.00\n35.05\nSHOP.CARD REDEMPTION\nACCOUNT ************0246\nBeg Bal\n157.29\nTran Amt End Bal\n35.05\n122.242\n# ITEMS SOLD 4\nTC# 6949 6652 6669 8007 1705\nLow Prices You Can Trust. Every Day.\n10/16/21\n11:22:45",
+    "resolved": [
+      {
+        "name": "Celery",
+        "kind": "exact",
+        "source": "CELERY HEART 003338365301 F2.48 N"
+      }
+    ],
+    "unresolved": [
+      {
+        "raw": "bulidi www.bloves to",
+        "cleaned": "Bulidi Www.Bloves To",
+        "expanded": "bulidi www.bloves to"
+      },
+      {
+        "raw": "Walmartway 28th worl",
+        "cleaned": "Walmartway 28Th Worl",
+        "expanded": "walmartway 28th worl"
+      },
+      {
+        "raw": "2 to 7 m 863-676-9425 MOURIEL Juoda Hot",
+        "cleaned": "To M - - Mouriel Juoda Hot",
+        "expanded": "to m - - mouriel juoda hot"
+      },
+      {
+        "raw": "2000 STATE ROAD 60 E",
+        "cleaned": "State Road",
+        "expanded": "state road"
+      },
+      {
+        "raw": "smisW 00012",
+        "cleaned": "Smisw",
+        "expanded": "smisw"
+      },
+      {
+        "raw": "hemicW LAKE WALES FL 33898",
+        "cleaned": "Hemicw Lake Wales Fl",
+        "expanded": "hemicw lake wales fl"
+      },
+      {
+        "raw": "GRILL COVER 471288396027",
+        "cleaned": "Grill Cover",
+        "expanded": "grill cover"
+      },
+      {
+        "raw": "FIBER CHOICE 036926600094 b",
+        "cleaned": "Fiber Choice B",
+        "expanded": "fiber choice b"
+      },
+      {
+        "raw": "RED GRAPE 000000004023KF",
+        "cleaned": "Red Grape 000000004023Kf",
+        "expanded": "red grape 000000004023kf"
+      },
+      {
+        "raw": "sons 19010",
+        "cleaned": "Sons",
+        "expanded": "sons"
+      },
+      {
+        "raw": "SHOP.CARD REDEMPTION",
+        "cleaned": "Shop.Card Redemption",
+        "expanded": "shop.card redemption"
+      },
+      {
+        "raw": "Beg Bal",
+        "cleaned": "Beg Bal",
+        "expanded": "beg bal"
+      },
+      {
+        "raw": "Tran Amt End Bal",
+        "cleaned": "Tran Amt End Bal",
+        "expanded": "tran amt end bal"
+      }
+    ]
+  },
+  "2.jpg": {
+    "raw_text": "Give us feedback survey.walmart.com\nThank you! ID #:7PB65JWCFZ2\nhome\nWalmart.com\n949-498-6669 Mgr: MICHAEL\n951 AVENIDA PICO\nSAN CLEMENTE CA 92673\nST# 02527 OP# 009045 TE# 45 TR# 06193\nGV OATMEAL 007874243408 F 1.76 0\n081236803115\nOT 200Z TUM\n6.74 X\nM ATHLETICS\n019104567781\n24.97 X\nDEXAS 15X20\n008429710921\n12.97 X\nSUBTOTAL\n46.44\nTAX 1 7.750 %\n3.46\nTOTAL\n49.90\n18\nDEBIT TEND\n49.90\nCHANGE DUE\n0.00\nEFT DEBIT\nPAY FROM PRIMARY\n49.90\nTOTAL PURCHASE\n**** **** **** 9689 I O\nUS DEBIT\nREF #029200639128\nNETWORK ID. 0056 APPR CODE 461500\nUS DEBIT\nAID A0000000980840\nAAC 7756F4EB82B54EED\nTERMINAL # SC011004\n10/18/20\n11:30:42\n# ITEMS SOLD 4\nTC# 2400 4776 4305 8847 1471\nW+\nw+\nIntroducing Walmart+\nJoin today at walmart.com/plus\nLow Prices You Can Trust. Every Day.\n10/18/20\n11:30:46",
+    "resolved": [
+      {
+        "name": "Oatmeal",
+        "kind": "exact",
+        "source": "GV OATMEAL 007874243408 F 1.76 0"
+      }
+    ],
+    "unresolved": [
+      {
+        "raw": "home",
+        "cleaned": "Home",
+        "expanded": "home"
+      },
+      {
+        "raw": "951 AVENIDA PICO",
+        "cleaned": "Avenida Pico",
+        "expanded": "avenida pico"
+      },
+      {
+        "raw": "SAN CLEMENTE CA 92673",
+        "cleaned": "San Clemente Ca",
+        "expanded": "san clemente ca"
+      },
+      {
+        "raw": "OT 200Z TUM",
+        "cleaned": "Ot 200Z Tum",
+        "expanded": "ot 200z tum"
+      },
+      {
+        "raw": "M ATHLETICS",
+        "cleaned": "M Athletics",
+        "expanded": "m athletics"
+      },
+      {
+        "raw": "DEXAS 15X20",
+        "cleaned": "Dexas 15X20",
+        "expanded": "dexas 15x20"
+      },
+      {
+        "raw": "PAY FROM PRIMARY",
+        "cleaned": "Pay From Primary",
+        "expanded": "pay from primary"
+      },
+      {
+        "raw": "AID A0000000980840",
+        "cleaned": "Aid A0000000980840",
+        "expanded": "aid a0000000980840"
+      },
+      {
+        "raw": "AAC 7756F4EB82B54EED",
+        "cleaned": "Aac 7756F4Eb82B54Eed",
+        "expanded": "aac 7756f4eb82b54eed"
+      }
+    ]
+  },
+  "3.jpg": {
+    "raw_text": "See back of receipt for your chance\nto win $1000 ID #:7N5N1V1XCQDQ\nWalmart\n317-851-1102 Mar:JAMIE BROOKSHIRE\n882 S. STATE ROAD 135\nGREENWOOD IN 46143\nST# 05483 OP# 001436 TE# 09 TR#\n06976\nTATER TOTS\n001312000026 F\n2.96 0\nHARD/PROV/DC 007874219410 F\n2.68 0\nSNACK BARS\n002190848816 F\n4.98 T\nHRI CL CHS\n003120506000 F\n5.88 0\nHRI CL CHS\n003120506000 F\n5.88 0\n**VOIDED ENTRY\nHRI CL CHS\n003120506000 F\n5.88-0\nHRI 12 USG 003120535000 F\n5.88 0\nEARBUDS\nHRI CL PEP 003120507000 F\n068113100946\n5.88 0\n4.88 X\nSC BCN CHDDR 007874202906 F\n6.98 0\nABF THINBRST 022451710972 F\n9.72 0\nHARD/PROV/DC 007874219410 F\n2.68 0\nDV RSE OIL M 001111101220\n5.94 X\nAPPLE 3 BAG 084747300184 F\n6.47 N\nSTOK LT SWT 004127102774 F\n4.42 T\nPEANUT BUTTR 005150025499 F\n6.44 0\nAVO VERDE\n061611206143 F\n2.98 N\nROLLS\n007874219415 F\n1.28 0\nBTS DRY BLON\n501072452746\n6.58 X\nGALE\n000000000003K\n32.00 T\nTR HS FRM 4\n002240062190\n2.74 X\nBAGELS\n001376402801 F\n4.56 0\nGV SLIDERS\n007874201525\n2.98 X\nACCESSORY\n007515161216\n0.97 X\nCHEEZE IT\n002410053523 F\n4.00 0\nWAS 4.54\nYOU SAVED 0.54\nRITZ\n004400088210 F\n2.78 N\nRUFFLES\n002840020942 F\n2.50 N\nGV HNY GRMS\n007874207253 F\n1.28 N\nSUBTOTAL\n139.44\nTAX 1 7.000 %\n4.58\nTOTAL\n144.02\nCASH TEND\n150.02\n6.00\nCHANGE DUE\n# ITEMS SOLD 26\nTC# 0783 5080 4072 3416 2495 5\n04/27/19 12:59:46\nScan with Walmart app to save receipts",
+    "resolved": [
+      {
+        "name": "Cheese",
+        "kind": "exact",
+        "source": "HRI CL CHS"
+      },
+      {
+        "name": "Pepper",
+        "kind": "exact",
+        "source": "HRI CL PEP 003120507000 F"
+      },
+      {
+        "name": "Bacon",
+        "kind": "exact",
+        "source": "SC BCN CHDDR 007874202906 F"
+      },
+      {
+        "name": "Apples",
+        "kind": "fuzzy",
+        "source": "APPLE 3 BAG 084747300184 F"
+      },
+      {
+        "name": "Peanut Butter",
+        "kind": "fuzzy",
+        "source": "PEANUT BUTTR 005150025499 F"
+      },
+      {
+        "name": "Honey",
+        "kind": "exact",
+        "source": "GV HNY GRMS"
+      }
+    ],
+    "unresolved": [
+      {
+        "raw": "to win $1000 ID #:7N5N1V1XCQDQ",
+        "cleaned": "To Win Id 7N5N1V1Xcqdq",
+        "expanded": "to win id 7n5n1v1xcqdq"
+      },
+      {
+        "raw": "317-851-1102 Mar:JAMIE BROOKSHIRE",
+        "cleaned": "Mar Jamie Brookshire",
+        "expanded": "mar jamie brookshire"
+      },
+      {
+        "raw": "882 S. STATE ROAD 135",
+        "cleaned": "S. State Road",
+        "expanded": "s. state road"
+      },
+      {
+        "raw": "GREENWOOD IN 46143",
+        "cleaned": "Greenwood In",
+        "expanded": "greenwood in"
+      },
+      {
+        "raw": "TATER TOTS",
+        "cleaned": "Tater Tots",
+        "expanded": "tater tots"
+      },
+      {
+        "raw": "HARD/PROV/DC 007874219410 F",
+        "cleaned": "Hard Prov Dc",
+        "expanded": "hard prov dc"
+      },
+      {
+        "raw": "SNACK BARS",
+        "cleaned": "Snack Bars",
+        "expanded": "snack bars"
+      },
+      {
+        "raw": "**VOIDED ENTRY",
+        "cleaned": "Voided Entry",
+        "expanded": "voided entry"
+      },
+      {
+        "raw": "HRI 12 USG 003120535000 F",
+        "cleaned": "Hri Usg",
+        "expanded": "hri usg"
+      },
+      {
+        "raw": "EARBUDS",
+        "cleaned": "Earbuds",
+        "expanded": "earbuds"
+      },
+      {
+        "raw": "ABF THINBRST 022451710972 F",
+        "cleaned": "Abf Thinbrst",
+        "expanded": "abf thinbrst"
+      },
+      {
+        "raw": "HARD/PROV/DC 007874219410 F",
+        "cleaned": "Hard Prov Dc",
+        "expanded": "hard prov dc"
+      },
+      {
+        "raw": "DV RSE OIL M 001111101220",
+        "cleaned": "Dv Rse Oil",
+        "expanded": "dv rse oil"
+      },
+      {
+        "raw": "STOK LT SWT 004127102774 F",
+        "cleaned": "Stok Lt Swt",
+        "expanded": "stok lt swt"
+      },
+      {
+        "raw": "AVO VERDE",
+        "cleaned": "Avo Verde",
+        "expanded": "avo verde"
+      },
+      {
+        "raw": "ROLLS",
+        "cleaned": "Rolls",
+        "expanded": "rolls"
+      },
+      {
+        "raw": "BTS DRY BLON",
+        "cleaned": "Bts Dry Blon",
+        "expanded": "bts dry blon"
+      },
+      {
+        "raw": "GALE",
+        "cleaned": "Gale",
+        "expanded": "gale"
+      },
+      {
+        "raw": "000000000003K",
+        "cleaned": "000000000003K",
+        "expanded": "000000000003k"
+      },
+      {
+        "raw": "TR HS FRM 4",
+        "cleaned": "Tr Hs Frm",
+        "expanded": "tr hs frm"
+      },
+      {
+        "raw": "BAGELS",
+        "cleaned": "Bagels",
+        "expanded": "bagels"
+      },
+      {
+        "raw": "GV SLIDERS",
+        "cleaned": "Gv Sliders",
+        "expanded": "gv sliders"
+      },
+      {
+        "raw": "ACCESSORY",
+        "cleaned": "Accessory",
+        "expanded": "accessory"
+      },
+      {
+        "raw": "CHEEZE IT",
+        "cleaned": "Cheeze It",
+        "expanded": "cheeze it"
+      },
+      {
+        "raw": "WAS 4.54",
+        "cleaned": "Was",
+        "expanded": "was"
+      },
+      {
+        "raw": "YOU SAVED 0.54",
+        "cleaned": "You Saved",
+        "expanded": "you saved"
+      },
+      {
+        "raw": "RITZ",
+        "cleaned": "Ritz",
+        "expanded": "ritz"
+      },
+      {
+        "raw": "RUFFLES",
+        "cleaned": "Ruffles",
+        "expanded": "ruffles"
+      }
+    ]
+  },
+  "4.jpg": {
+    "raw_text": "Walmart\nSave money. Live better.\n(712) 366 - 3326\nMANAGER DONALD MONEYMAKER\n3201 MANAWA CENTRE DR\nCOUNCIL BLUFFS IA 51501\nST# 01965 OP# 002031 TE# 20 TR# 05145\nSW HRO FGHTR 063050940732\n6.94 T\nSUBTOTAL\n6.94\nTAX 1 7.000%\n0.49\nTOTAL\n7.43\nDEBIT TEND\n7.43\nCHANGE DUE\n0.00\nEFT DEBIT\nPAY FROM PRIMARY\n7.43 TOTAL PURCHASE\nACCOUNT #\n**** **** ****\nREF #534200381755\nNETWORK ID. 0056 APPR CODE 087193\nTERMINAL #MX995026\n12/08/15\n12:39:24\n# ITEMS SOLD 1\nTC# 3261 4114 0323 3051 6498\nNEW STORE HOURS\nOpen 6am to midnight 7 days a week.\n12/08/15 12:39:26\nS\nSavings Catcher! Scan with Walmart app",
+    "resolved": [],
+    "unresolved": [
+      {
+        "raw": "3201 MANAWA CENTRE DR",
+        "cleaned": "Manawa Centre Dr",
+        "expanded": "manawa centre dr"
+      },
+      {
+        "raw": "COUNCIL BLUFFS IA 51501",
+        "cleaned": "Council Bluffs Ia",
+        "expanded": "council bluffs ia"
+      },
+      {
+        "raw": "SW HRO FGHTR 063050940732",
+        "cleaned": "Sw Hro Fghtr",
+        "expanded": "sweet hro fghtr"
+      },
+      {
+        "raw": "PAY FROM PRIMARY",
+        "cleaned": "Pay From Primary",
+        "expanded": "pay from primary"
+      },
+      {
+        "raw": "NEW STORE HOURS",
+        "cleaned": "New Store Hours",
+        "expanded": "new store hours"
+      },
+      {
+        "raw": "Open 6am to midnight 7 days a week.",
+        "cleaned": "Open 6Am To Midnight Days A Week",
+        "expanded": "open 6am to midnight days a week"
+      }
+    ]
+  },
+  "5.jpg": {
+    "raw_text": "WHOLE FOODS\nMARKET\nSunnyvale SVL 408-419-1290\n150 E Mc Kinley Ave\nSunnyvale, CA 94086\nKTTL SEA SALT POT CHP\n$1.29 F\nBRAIDED BRIOCHE\n$6.99 F\nCHEF PLATE MEAL $10\n2\n@ $10.00 ea\n$20.00 F\nSubtotal:\n$28.28\nNet Sales:\n$28.28\nTotal:\n$28.28\nSold Items:\n4\nPaid:\nRETURNS: We are now accepting returns on\npurchases with the following conditions:\nReturns will only be accepted on purchases\nmade on or after 9/15/2020. All returns\nrequire a receipt. No returns on items\npurchased after 90 days. For additional\ninformation please visit wfm.com/returns.\n***\nEarn 5% Back at Whole Foods Market\nwith the Amazon Prime Rewards Visa.\nLearn more at amazon.com/amazonvisa\n***\n**\nHOW WAS YOUR SHOPPING EXPERIENCE?\nGo to: http://www.wfm.com/feedback\nENTER FOR A CHANCE TO WIN A $250 GIFT CARD\n908 6387 02/10/2021 07:10 PM\n63011070790806387021020210\n6KTHQW62ZD\nThanks for shopping at Whole Foods Market",
+    "resolved": [
+      {
+        "name": "Sea Salt",
+        "kind": "exact",
+        "source": "KTTL SEA SALT POT CHP"
+      }
+    ],
+    "unresolved": [
+      {
+        "raw": "MARKET",
+        "cleaned": "Market",
+        "expanded": "market"
+      },
+      {
+        "raw": "Sunnyvale SVL 408-419-1290",
+        "cleaned": "Sunnyvale Svl",
+        "expanded": "sunnyvale svl"
+      },
+      {
+        "raw": "150 E Mc Kinley Ave",
+        "cleaned": "E Mc Kinley Ave",
+        "expanded": "e mc kinley ave"
+      },
+      {
+        "raw": "Sunnyvale, CA 94086",
+        "cleaned": "Sunnyvale, Ca",
+        "expanded": "sunnyvale, ca"
+      },
+      {
+        "raw": "BRAIDED BRIOCHE",
+        "cleaned": "Braided Brioche",
+        "expanded": "braided brioche"
+      },
+      {
+        "raw": "CHEF PLATE MEAL $10",
+        "cleaned": "Chef Plate Meal",
+        "expanded": "chef plate meal"
+      },
+      {
+        "raw": "@ $10.00 ea",
+        "cleaned": "@ Ea",
+        "expanded": "@ ea"
+      },
+      {
+        "raw": "Net Sales:",
+        "cleaned": "Net Sales",
+        "expanded": "net sales"
+      },
+      {
+        "raw": "RETURNS: We are now accepting returns on",
+        "cleaned": "Returns We Are Now Accepting Returns On",
+        "expanded": "returns we are now accepting returns on"
+      },
+      {
+        "raw": "purchases with the following conditions:",
+        "cleaned": "Purchases With The Following Conditions",
+        "expanded": "purchases with the following conditions"
+      },
+      {
+        "raw": "Returns will only be accepted on purchases",
+        "cleaned": "Returns Will Only Be Accepted On Purchases",
+        "expanded": "returns will only be accepted on purchases"
+      },
+      {
+        "raw": "made on or after 9/15/2020. All returns",
+        "cleaned": "Made On Or After . All Returns",
+        "expanded": "made on or after . all returns"
+      },
+      {
+        "raw": "purchased after 90 days. For additional",
+        "cleaned": "Purchased After Days. For Additional",
+        "expanded": "purchased after days. for additional"
+      },
+      {
+        "raw": "information please visit wfm.com/returns.",
+        "cleaned": "Information Please Visit Wfm.Com Returns",
+        "expanded": "information please visit wfm.com returns"
+      },
+      {
+        "raw": "Learn more at amazon.com/amazonvisa",
+        "cleaned": "Learn More At Amazon.Com Amazonvisa",
+        "expanded": "learn more at amazon.com amazonvisa"
+      },
+      {
+        "raw": "HOW WAS YOUR SHOPPING EXPERIENCE?",
+        "cleaned": "How Was Your Shopping Experience?",
+        "expanded": "how was your shopping experience?"
+      },
+      {
+        "raw": "ENTER FOR A CHANCE TO WIN A $250 GIFT CARD",
+        "cleaned": "Enter For A Chance To Win A Gift Card",
+        "expanded": "enter for a chance to win a gift card"
+      },
+      {
+        "raw": "6KTHQW62ZD",
+        "cleaned": "6Kthqw62Zd",
+        "expanded": "6kthqw62zd"
+      }
+    ]
+  },
+  "6.JPG": {
+    "raw_text": "MAMI DAY's\nCREPERIE\nLippo Mall Kemang, L\nKemang VI No. 6\nmomiantoys_ind (inst\n@indmomi (twitter)\nCheck: 3850\nPax:1\nOP: Gunawan\nPOS Title:Cashier\nGunawan\nRcpt#:A15000001363\n1 Woman\n2 Ham Cheese\n26/01/2015 16:13\n0\n74,000\n1 Ice Java Tea\n1 Mineral Water\nSUBTOTAL\nTOTAL\nCASH\nChange\n16,000\n13,000\n1 Black ahengData.pro72,000\n175,000\n175,000\n200,000\n25,000\nClosed Bill\n-26/01/2015 16:14-------\n->\nThank you for tasting\nour \"Meltingly Crepe\"\nTrainingData pro",
+    "resolved": [
+      {
+        "name": "Cheese",
+        "kind": "exact",
+        "source": "2 Ham Cheese"
+      },
+      {
+        "name": "Water",
+        "kind": "exact",
+        "source": "1 Mineral Water"
+      }
+    ],
+    "unresolved": [
+      {
+        "raw": "MAMI DAY's",
+        "cleaned": "Mami Day'S",
+        "expanded": "mami day's"
+      },
+      {
+        "raw": "CREPERIE",
+        "cleaned": "Creperie",
+        "expanded": "creperie"
+      },
+      {
+        "raw": "Lippo Mall Kemang, L",
+        "cleaned": "Lippo Mall Kemang",
+        "expanded": "lippo mall kemang"
+      },
+      {
+        "raw": "Kemang VI No. 6",
+        "cleaned": "Kemang Vi No",
+        "expanded": "kemang vi no"
+      },
+      {
+        "raw": "momiantoys_ind (inst",
+        "cleaned": "Momiantoys_Ind (Inst",
+        "expanded": "momiantoys_ind (inst"
+      },
+      {
+        "raw": "@indmomi (twitter)",
+        "cleaned": "@Indmomi (Twitter)",
+        "expanded": "@indmomi (twitter)"
+      },
+      {
+        "raw": "Check: 3850",
+        "cleaned": "Check",
+        "expanded": "check"
+      },
+      {
+        "raw": "Pax:1",
+        "cleaned": "Pax",
+        "expanded": "pax"
+      },
+      {
+        "raw": "OP: Gunawan",
+        "cleaned": "Op Gunawan",
+        "expanded": "op gunawan"
+      },
+      {
+        "raw": "Gunawan",
+        "cleaned": "Gunawan",
+        "expanded": "gunawan"
+      },
+      {
+        "raw": "Rcpt#:A15000001363",
+        "cleaned": "Rcpt A15000001363",
+        "expanded": "rcpt a15000001363"
+      },
+      {
+        "raw": "1 Woman",
+        "cleaned": "Woman",
+        "expanded": "woman"
+      },
+      {
+        "raw": "1 Ice Java Tea",
+        "cleaned": "Ice Java Tea",
+        "expanded": "ice java tea"
+      },
+      {
+        "raw": "1 Black ahengData.pro72,000",
+        "cleaned": "Black Ahengdata.Pro72",
+        "expanded": "black ahengdata.pro72"
+      },
+      {
+        "raw": "Closed Bill",
+        "cleaned": "Closed Bill",
+        "expanded": "closed bill"
+      },
+      {
+        "raw": "our \"Meltingly Crepe\"",
+        "cleaned": "Our \"Meltingly Crepe\"",
+        "expanded": "our \"meltingly crepe\""
+      },
+      {
+        "raw": "TrainingData pro",
+        "cleaned": "Trainingdata Pro",
+        "expanded": "trainingdata pro"
+      }
+    ]
+  },
+  "7.jpg": {
+    "raw_text": "See back of receipt for your chance\nto win $1000\nID #: 7L2T9WJM25F\nWalmart\nSave money. Live better.\n(701) 223 - 3066\nMANAGER TIM MORRIS\n2717 ROCK ISLAND PL\nBISMARCK ND 58504\nST# 01534 OP# 009048 TE# 48 TR#\n04455\n6 WING PLATE 020108870398\n3.98 P\nASST 27 063099656595\n4.88 X\nCUTIE CAR\n063099656644\n12.88 X\nSUBTOTAL\n21.74\nTAX 1\n6.500 %\n1.15\nTAX 4\n7.500 %\n0.30\nTOTAL\n23.19\nDEBIT TEND\n23.19\nCHANGE DUE\n0.00\n23.19 TOTAL PURCHASE\nEFT DEBIT\nUS DEBIT\nPAY FROM PRIMARY\n**** **** **** 2696 I O\nREF # 731700494718\nNETWORK ID. 0081 APPR CODE 936886\nUS DEBIT\nAID A0000000980840\nTC 58877239DA5B3B44\n*NO SIGNATURE REQUIRED\nTERMINAL # SC011090\n11/13/17\n12:34:04\n# ITEMS SOLD 3\nTC# 2188 7274 6444 1567 3762\nLow Prices You Can Trust. Every Day.\n11/13/17 12:34:11\nStore receipts on your phone. Walmart P\nay.",
+    "resolved": [],
+    "unresolved": [
+      {
+        "raw": "to win $1000",
+        "cleaned": "To Win",
+        "expanded": "to win"
+      },
+      {
+        "raw": "ID #: 7L2T9WJM25F",
+        "cleaned": "Id 7L2T9Wjm25F",
+        "expanded": "id 7l2t9wjm25f"
+      },
+      {
+        "raw": "2717 ROCK ISLAND PL",
+        "cleaned": "Rock Island Pl",
+        "expanded": "rock island pl"
+      },
+      {
+        "raw": "BISMARCK ND 58504",
+        "cleaned": "Bismarck Nd",
+        "expanded": "bismarck nd"
+      },
+      {
+        "raw": "6 WING PLATE 020108870398",
+        "cleaned": "Wing Plate",
+        "expanded": "wing plate"
+      },
+      {
+        "raw": "ASST 27 063099656595",
+        "cleaned": "Asst",
+        "expanded": "asst"
+      },
+      {
+        "raw": "CUTIE CAR",
+        "cleaned": "Cutie Car",
+        "expanded": "cutie car"
+      },
+      {
+        "raw": "PAY FROM PRIMARY",
+        "cleaned": "Pay From Primary",
+        "expanded": "pay from primary"
+      },
+      {
+        "raw": "AID A0000000980840",
+        "cleaned": "Aid A0000000980840",
+        "expanded": "aid a0000000980840"
+      },
+      {
+        "raw": "TC 58877239DA5B3B44",
+        "cleaned": "Tc 58877239Da5B3B44",
+        "expanded": "tc 58877239da5b3b44"
+      },
+      {
+        "raw": "*NO SIGNATURE REQUIRED",
+        "cleaned": "Required",
+        "expanded": "required"
+      }
+    ]
+  },
+  "8.jpg": {
+    "raw_text": "COSTCO\nWHOLESALE\nThornton #629\n16375 N. Washington St.\nThornton, CO 80023\n2X Member 111826278335\nE\n673919 FF BS BREAST\n23.99 E\nE\n633561 KS DICED TOM\n6.49 E\nE\n967596 JACKORGSALSA\n2.97 E\n3 @ 4.29\nE\n878137 18CT EGGS\n12.87 E\nE 77053 GRAPE TOMATO\n6.29 E\n404609 ECO HALF PAN\n6.49 A\nE 55992 GRND TURKEY\n18.47 E\nE\n263423 CHPD ONION\n3.59 E\nE 22101 MONT JACK 2#\n4.45 E\nSUBTOTAL\n85.61\nTAX\n3.52\n**** TOTAL\n89.13\nCheck/Member Prntd\n89.13\nCHANGE\n0.00\nA 8.50% TAX\n0.55\nE 3.75% TAX\n2.97\nTOTAL TAX\n3.52\nTOTAL NUMBER OF ITEMS SOLD =\n11\n04/20/2016 15:00 629 4 172 14\nOP#: 14 Name: PEPPER\nThank You!\nPlease Come Again\nWhse: 629 Trm:4 Trn: 172 OP:14",
+    "resolved": [
+      {
+        "name": "Diced Tomatoes",
+        "kind": "fuzzy",
+        "source": "633561 KS DICED TOM"
+      },
+      {
+        "name": "Eggs",
+        "kind": "exact",
+        "source": "878137 18CT EGGS"
+      },
+      {
+        "name": "Grape Tomatoes",
+        "kind": "fuzzy",
+        "source": "E 77053 GRAPE TOMATO"
+      },
+      {
+        "name": "Turkey",
+        "kind": "exact",
+        "source": "E 55992 GRND TURKEY"
+      },
+      {
+        "name": "Chopped Onion",
+        "kind": "fuzzy",
+        "source": "263423 CHPD ONION"
+      },
+      {
+        "name": "Pepper",
+        "kind": "exact",
+        "source": "OP#: 14 Name: PEPPER"
+      }
+    ],
+    "unresolved": [
+      {
+        "raw": "WHOLESALE",
+        "cleaned": "Wholesale",
+        "expanded": "wholesale"
+      },
+      {
+        "raw": "Thornton #629",
+        "cleaned": "Thornton",
+        "expanded": "thornton"
+      },
+      {
+        "raw": "16375 N. Washington St.",
+        "cleaned": "N. Washington St",
+        "expanded": "n. washington st"
+      },
+      {
+        "raw": "Thornton, CO 80023",
+        "cleaned": "Thornton, Co",
+        "expanded": "thornton, co"
+      },
+      {
+        "raw": "673919 FF BS BREAST",
+        "cleaned": "Ff Bs Breast",
+        "expanded": "ff bs breast"
+      },
+      {
+        "raw": "967596 JACKORGSALSA",
+        "cleaned": "Jackorgsalsa",
+        "expanded": "jackorgsalsa"
+      },
+      {
+        "raw": "404609 ECO HALF PAN",
+        "cleaned": "Eco Half Pan",
+        "expanded": "eco half pan"
+      },
+      {
+        "raw": "E 22101 MONT JACK 2#",
+        "cleaned": "E Mont Jack",
+        "expanded": "e mont jack"
+      },
+      {
+        "raw": "Please Come Again",
+        "cleaned": "Please Come Again",
+        "expanded": "please come again"
+      },
+      {
+        "raw": "Whse: 629 Trm:4 Trn: 172 OP:14",
+        "cleaned": "Whse Trm Trn Op",
+        "expanded": "whse trm trn op"
+      }
+    ]
+  },
+  "9.jpg": {
+    "raw_text": "WINCO NOODLES\nWinCo\nFOODS\nThe Supermarket Lane Price Leader\nwww.wincofoods.com\n800 S Cockrell Hill Rd\nDuncanville, TX 75137\nStore #0124\nCashier: Yolanda R\n09/08/14\nCHICKEN WINGS 26840100000\nN/YORK TX GRLC 7045900558\nPICSWEET BLEND 7056096902\nPICSWEET GREENS 7056087677\n20 1.34\n20 1.28\nCHICKEN WINGS 26840100000\nDIET LN GRND B 20167400000\nPORK LOIN CHOP 20337400000\n26841800000\nDRUMSTICKS\nEYE RND STK FP 20148200000\nEYE RND STK FP 20148200000\nBEEF FOR STEW 20254300000\nPORK 1/2 LOIN 20323300000\nB/BEST S STEAK 4497921020\nBAR S MEAT FRNK 1590013401\n0/M HAM\n11:16:24\n2.18 FS\n5.39 FS\n2.68 FS\n2.56 FS\n5.48 FS\n10.87 FS\n9.91 FS\n5.32 FS\n8.39 FS\n8.24 FS\n10.48 FS\n8.12 FS\n1.00 FS\n.88 FS\n4470001903\n3.99 FS\n7055280303\n1.68 FS\n2 @ .84\nKRFT DELUXE MAC 2100065886\nINDRBRD CHIX BR 3737101318\n5.98 FS\n3.64 FS\n2 @ 1.82\nEGGO WAFFLE\n3800037435\n1.96 FS\nL/D NUTTY BARS 2430004120\n1.25 FS\nL\\D OATMEAL CRM 2430004101\n1.25 FS\nLINKS MILD\n74295503660\n5.78 FS\nKEEB TOWNHOUSE\n3010010055\n1.98 FS\nTURKEY FRANK\n4222281210\n.88 FS\nRESERS POT SLD\n7111719300\n.98 FS\nDM SPAG SAUCE\n2400052363\n.71 FS\nHUNTS MANWICH\n2700044212\n1.64 FS\n2 @ .82\nDM PNAPL CHNKY 2400000164\n1.96 FS\n20.98\nSUNBEAN BUNS 7763306333\nWINCO SNDWCH WT 7055200115\nWINCO HOMO MILK 7055240600\nEGGS\n1.98 FS\n.91 FS\n2.48 FS\n7003837280\n1.37 FS\nSUBTOTAL\n121.92\nTOTAL TAX\n.00\nTOTAL\n121.92",
+    "resolved": [
+      {
+        "name": "Noodles",
+        "kind": "exact",
+        "source": "WINCO NOODLES"
+      },
+      {
+        "name": "Red Chilli",
+        "kind": "fuzzy",
+        "source": "800 S Cockrell Hill Rd"
+      },
+      {
+        "name": "Chicken Wings",
+        "kind": "exact",
+        "source": "CHICKEN WINGS 26840100000"
+      },
+      {
+        "name": "Pork",
+        "kind": "exact",
+        "source": "PORK LOIN CHOP 20337400000"
+      },
+      {
+        "name": "Beef",
+        "kind": "exact",
+        "source": "BEEF FOR STEW 20254300000"
+      },
+      {
+        "name": "Macaroni",
+        "kind": "exact",
+        "source": "KRFT DELUXE MAC 2100065886"
+      },
+      {
+        "name": "Oatmeal",
+        "kind": "fuzzy",
+        "source": "L\\D OATMEAL CRM 2430004101"
+      },
+      {
+        "name": "Turkey",
+        "kind": "exact",
+        "source": "TURKEY FRANK"
+      },
+      {
+        "name": "Potatoes",
+        "kind": "fuzzy",
+        "source": "RESERS POT SLD"
+      },
+      {
+        "name": "Spaghetti",
+        "kind": "fuzzy",
+        "source": "DM SPAG SAUCE"
+      },
+      {
+        "name": "Buns",
+        "kind": "exact",
+        "source": "SUNBEAN BUNS 7763306333"
+      },
+      {
+        "name": "Milk",
+        "kind": "exact",
+        "source": "WINCO HOMO MILK 7055240600"
+      },
+      {
+        "name": "Eggs",
+        "kind": "exact",
+        "source": "EGGS"
+      }
+    ],
+    "unresolved": [
+      {
+        "raw": "WinCo",
+        "cleaned": "Winco",
+        "expanded": "winco"
+      },
+      {
+        "raw": "FOODS",
+        "cleaned": "Foods",
+        "expanded": "foods"
+      },
+      {
+        "raw": "www.wincofoods.com",
+        "cleaned": "Www.Wincofoods.Com",
+        "expanded": "www.wincofoods.com"
+      },
+      {
+        "raw": "Duncanville, TX 75137",
+        "cleaned": "Duncanville, Tx",
+        "expanded": "duncanville, tx"
+      },
+      {
+        "raw": "N/YORK TX GRLC 7045900558",
+        "cleaned": "N York Tx Grlc",
+        "expanded": "n york tx grlc"
+      },
+      {
+        "raw": "PICSWEET BLEND 7056096902",
+        "cleaned": "Picsweet Blend",
+        "expanded": "picsweet blend"
+      },
+      {
+        "raw": "PICSWEET GREENS 7056087677",
+        "cleaned": "Picsweet Greens",
+        "expanded": "picsweet greens"
+      },
+      {
+        "raw": "DIET LN GRND B 20167400000",
+        "cleaned": "Diet Ln Grnd",
+        "expanded": "diet loin ground"
+      },
+      {
+        "raw": "DRUMSTICKS",
+        "cleaned": "Drumsticks",
+        "expanded": "drumsticks"
+      },
+      {
+        "raw": "EYE RND STK FP 20148200000",
+        "cleaned": "Eye Rnd Stk Fp",
+        "expanded": "eye rnd steak fp"
+      },
+      {
+        "raw": "EYE RND STK FP 20148200000",
+        "cleaned": "Eye Rnd Stk Fp",
+        "expanded": "eye rnd steak fp"
+      },
+      {
+        "raw": "B/BEST S STEAK 4497921020",
+        "cleaned": "B Best S Steak",
+        "expanded": "b best s steak"
+      },
+      {
+        "raw": "BAR S MEAT FRNK 1590013401",
+        "cleaned": "Bar S Meat Frnk",
+        "expanded": "bar s meat frnk"
+      },
+      {
+        "raw": "0/M HAM",
+        "cleaned": "M Ham",
+        "expanded": "m ham"
+      },
+      {
+        "raw": "INDRBRD CHIX BR 3737101318",
+        "cleaned": "Indrbrd Chix Br",
+        "expanded": "indrbrd chix br"
+      },
+      {
+        "raw": "EGGO WAFFLE",
+        "cleaned": "Eggo Waffle",
+        "expanded": "eggo waffle"
+      },
+      {
+        "raw": "L/D NUTTY BARS 2430004120",
+        "cleaned": "L D Nutty Bars",
+        "expanded": "l d nutty bars"
+      },
+      {
+        "raw": "LINKS MILD",
+        "cleaned": "Links Mild",
+        "expanded": "links mild"
+      },
+      {
+        "raw": "KEEB TOWNHOUSE",
+        "cleaned": "Keeb Townhouse",
+        "expanded": "keeb townhouse"
+      },
+      {
+        "raw": "HUNTS MANWICH",
+        "cleaned": "Hunts Manwich",
+        "expanded": "hunts manwich"
+      },
+      {
+        "raw": "DM PNAPL CHNKY 2400000164",
+        "cleaned": "Dm Pnapl Chnky",
+        "expanded": "dm pnapl chnky"
+      },
+      {
+        "raw": "WINCO SNDWCH WT 7055200115",
+        "cleaned": "Winco Sndwch Wt",
+        "expanded": "winco sndwch white"
+      }
+    ]
+  }
+}
