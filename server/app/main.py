@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.routes.ingredients import router as ingredients_router
 from app.routes.pantry import router as pantry_router
+from app.routes.recipes import router as recipes_router
 from app.routes.upload import router as upload_router
 from app.routes.users import router as users_router
 from app.services.ingredient_loader import get_mealdb_ingredients
@@ -46,6 +47,7 @@ app.add_middleware(
 
 app.include_router(ingredients_router)
 app.include_router(pantry_router)
+app.include_router(recipes_router)
 app.include_router(upload_router)
 app.include_router(users_router)
 
