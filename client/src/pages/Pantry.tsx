@@ -18,6 +18,42 @@ interface PantryItem {
 const categories = ["All", "Protein", "Produce", "Grain", "Sauce", "Dairy", "Oil"];
 const editableCategories = categories.filter((category) => category !== "All");
 type SortMode = "default" | "newest" | "oldest" | "name";
+const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
+function isIsoDateString(value: string): boolean {
+  return ISO_DATE_PATTERN.test(value);
+}
+
+function getExpiryDateLabel(value: string): string {
+  if (!isIsoDateString(value)) return "No expiration date";
+
+  const date = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return "No expiration date";
+  return date.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function getExpiryCountdown(value: string, now: number): string {
+  if (!isIsoDateString(value)) return "No expiration date";
+
+  const expiryMoment = new Date(`${value}T23:59:59`).getTime();
+  if (Number.isNaN(expiryMoment)) return "No expiration date";
+
+  const diffMs = expiryMoment - now;
+  if (diffMs < 0) return "Item has expired";
+
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  if (diffHours < 24) return "Expires today";
+
+  const days = Math.floor(diffHours / 24);
+  const hours = diffHours % 24;
+  const dayLabel = `${days} day${days === 1 ? "" : "s"}`;
+  const hourLabel = `${hours} hour${hours === 1 ? "" : "s"}`;
+  return `${dayLabel}, ${hourLabel} left`;
+}
 
 const Pantry = () => {
   const navigate = useNavigate();
@@ -29,6 +65,7 @@ const Pantry = () => {
   const [ingredients, setIngredients] = useState<PantryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [deletingItemId, setDeletingItemId] = useState<string | null>(null);
+  const [currentTime, setCurrentTime] = useState(() => Date.now());
 
   const [newName, setNewName] = useState("");
   const [newCategory, setNewCategory] = useState("");
@@ -69,6 +106,16 @@ const Pantry = () => {
   }, []);
 
   useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 60_000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, []);
+
+  useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       if (!sortMenuRef.current) return;
       const target = event.target;
@@ -92,7 +139,7 @@ const Pantry = () => {
         bodyJson: {
           name: newName.trim(),
           category: newCategory.trim() || null,
-          expiry: newExpiry.trim() || "unknown",
+          expiry: newExpiry || "unknown",
         },
       });
 
@@ -112,7 +159,7 @@ const Pantry = () => {
     setEditingItemId(item.id);
     setEditName(item.name);
     setEditCategory(item.category ?? "");
-    setEditExpiry(item.expiry === "unknown" ? "" : item.expiry);
+    setEditExpiry(isIsoDateString(item.expiry) ? item.expiry : "");
   };
 
   const closeEditSheet = () => {
@@ -133,7 +180,7 @@ const Pantry = () => {
         bodyJson: {
           name: editName.trim(),
           category: editCategory.trim() || null,
-          expiry: editExpiry.trim() || "unknown",
+          expiry: editExpiry || "unknown",
         },
       });
 
@@ -292,7 +339,8 @@ const Pantry = () => {
             <div key={ing.id} className="flex items-center justify-between px-4 py-3">
               <div>
                 <p className="text-sm font-medium text-foreground">{ing.name}</p>
-                <p className="text-xs text-muted-foreground">Expires in {ing.expiry}</p>
+                <p className="text-xs text-muted-foreground">{getExpiryCountdown(ing.expiry, currentTime)}</p>
+                <p className="text-[11px] text-muted-foreground/70">Expiration date: {getExpiryDateLabel(ing.expiry)}</p>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-[10px] font-medium text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">
@@ -366,15 +414,17 @@ const Pantry = () => {
 
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-muted-foreground">
-              Expires in <span className="text-muted-foreground/60">(optional)</span>
+              Expiration date <span className="text-muted-foreground/60">(optional)</span>
             </label>
             <input
-              type="text"
-              placeholder="e.g. 3 days, 2 weeks, Dec 2026"
+              type="date"
               value={newExpiry}
               onChange={(e) => setNewExpiry(e.target.value)}
               className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
             />
+            <p className="text-[11px] text-muted-foreground/70">
+              The item will expire at the end of the selected day.
+            </p>
           </div>
 
           <button
@@ -429,15 +479,17 @@ const Pantry = () => {
 
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-muted-foreground">
-              Expires in <span className="text-muted-foreground/60">(optional)</span>
+              Expiration date <span className="text-muted-foreground/60">(optional)</span>
             </label>
             <input
-              type="text"
-              placeholder="e.g. 3 days, 2 weeks, Dec 2026"
+              type="date"
               value={editExpiry}
               onChange={(e) => setEditExpiry(e.target.value)}
               className="w-full bg-secondary border border-border rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
             />
+            <p className="text-[11px] text-muted-foreground/70">
+              {editExpiry ? getExpiryCountdown(editExpiry, currentTime) : "No expiration date selected"}
+            </p>
           </div>
 
           <div className="space-y-1">
