@@ -2,6 +2,9 @@
 
 **Recipes for the discerning student.**
 
+<img width="335" height="188" alt="s-blob-v1-IMAGE-GQOqWGqnEgo" src="https://github.com/user-attachments/assets/95d5d316-2ec2-4f41-be72-76dfdcb532e0" />
+
+
 GatorChef is a meal planning and grocery management platform built for college students transitioning to independent living. The app helps students turn pantry items or receipt data into quick, budget-conscious meal options, while generating a shopping list for anything they are missing.
 
 Our goal is simple: help students spend less, waste less, and eat better.
